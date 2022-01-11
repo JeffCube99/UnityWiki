@@ -1,15 +1,25 @@
-Welcome to Lumache's documentation!
-===================================
+Welcome to Unity Wiki!
+======================
 
 **UnityWiki** is a wiki containing information on various topics about the Unity game engine.
 
-.. note::
+..  note::
 
-   This project is under active development.
+    This project is under active development.
 
 Contents
 --------
 
-.. toctree::
+..  toctree::
+    :maxdepth: 2
+    :caption: Contents:
 
-
+    version_control/index.rst
+    basics/index.rst
+    controlling_characters/index.rst
+    tiles/index.rst
+    animation_2d/index.rst
+    cameras/index.rst
+    mesh2d/index.rst
+    ui/index.rst
+    events/index.rst
