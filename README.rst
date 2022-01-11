@@ -1,9 +1,6 @@
-Template for the Read the Docs tutorial
-=======================================
+Unity Wiki
+==========
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
+**UnityWiki** is a wiki containing information on various topics about the Unity game engine.
 
-Read the tutorial here:
-
-https://docs.readthedocs.io/en/stable/tutorial/
+The UnityWiki pages can be accessed at https://unitywiki.readthedocs.io/en/latest/
