@@ -6,3 +6,4 @@ Cameras
     :caption: Contents:
 
     cinemachine.rst
+    tips_and_tricks.rst
