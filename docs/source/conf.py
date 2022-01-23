@@ -1,5 +1,22 @@
 # Configuration file for the Sphinx documentation builder.
 
+###################### Fetching images stored through GitLFS ######################
+import os
+
+# If runs on ReadTheDocs environment
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
+# Hack for lacking git-lfs support ReadTheDocs
+if on_rtd:
+    if not os.path.exists('./git-lfs'):
+        os.system('wget https://github.com/git-lfs/git-lfs/releases/download/v2.7.1/git-lfs-linux-amd64-v2.7.1.tar.gz')
+        os.system('tar xvfz git-lfs-linux-amd64-v2.7.1.tar.gz')
+        os.system('./git-lfs install')  # make lfs available in current repository
+        os.system('./git-lfs fetch')  # download content from remote
+        os.system('./git-lfs checkout')  # make local files to have the real content on them
+
+####################################################################################
+
 # -- Project information
 
 project = 'UnityWiki'

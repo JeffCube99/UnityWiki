@@ -7,9 +7,6 @@ Welcome to Unity Wiki!
 
     This project is under active development.
 
-Contents
---------
-
 ..  toctree::
     :maxdepth: 2
     :caption: Contents:
@@ -23,3 +20,5 @@ Contents
     mesh2d/index.rst
     ui/index.rst
     events/index.rst
+    audio/index.rst
+    community/index.rst
