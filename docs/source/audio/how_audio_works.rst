@@ -8,11 +8,11 @@ Audio Sources and Listeners
 *   An **Audio Listener** is a component that is attached to a game object and recieves inputs from **Audio Sources**
     in the scene. Sounds picked up by the audio listener are played through the computer's speakers.
 
-..  image:: /images/audio_diagram.png
+..  image:: /_images/audio_diagram.png
 
 *   By default you can find the audio listener attached to the Main Camera in the scene.
 
-..  image:: /images/default_audio_listener.png
+..  image:: /_images/default_audio_listener.png
 
 2D vs 3D Audio Sources
 ======================
@@ -24,4 +24,4 @@ Audio Sources and Listeners
     are from the player.
 *   You can make the audio source appear more 2D or 3D by adjusting it's Spatial Blend slider.
 
-..  image:: /images/spatial_blend_slider.png
+..  image:: /_images/spatial_blend_slider.png
