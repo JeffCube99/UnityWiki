@@ -1,9 +1,8 @@
-Audio
-=====
+Community
+=========
 
 ..  toctree::
     :maxdepth: 2
     :caption: Contents:
 
-    basics.rst
-    how_audio_works.rst
+    quick_reference.rst
