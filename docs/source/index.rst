@@ -22,3 +22,7 @@ Welcome to Unity Wiki!
     events/index.rst
     audio/index.rst
     community/index.rst
+    issues/index.rst
+    physics/index.rst
+    scripting/index.rst
+    performance/performance.rst
