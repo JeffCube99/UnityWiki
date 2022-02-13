@@ -42,17 +42,17 @@ An easier way to think about anchors is in a 1 dimensional case:
 
 This behavior to some interesting scenarios:
 
-*   **If an anchor rectangle is larger than the UI element**: If the anchor rectangle's size is reduced past the length
-    of the ui element, the ui rectangle will have 0 width and disappear. If the anchor rectangle continues to be
-    squeezed the UI element will simply not render. This gives the appearance of the element scaling faster
-    than the parent when the parent is much smaller than the ui element.
+*   **If an anchor rectangle is larger than the UI element**: If the anchor rectangle's width is reduced past the width
+    of the ui element, the ui element will have 0 width and disappear. If the anchor width continues to decrease,
+    even after the ui element has 0 width, the UI element will simply not render. If the parent ui element is scaled up or down,
+    the UI element will appear to scale much faster.
 
-*   **If the anchor rectangle is smaller than the UI element**: Even if the the anchor rectangle is squeezed to nothing,
-    the ui rectangle will still have some width. This gives the appearance of the element scaling slower than the parent
-    when the parent is much smaller than the ui element.
+*   **If the anchor rectangle is smaller than the UI element**: Even if the the anchor width is reduced to 0,
+    the ui element will still have some width. If the parent ui element is scaled up or down,
+    the UI element will appear to scale much slower.
 
 *   **If the anchor rectangle matches the UI dimensions**: The ui element will scale the same as the anchor
-    and its corners will always remain relative to the parent.
+    and its corners will always remain at the anchor points which are relative to the parent.
 
 
 Some configurations of anchors rectangles are as follows:
@@ -67,7 +67,7 @@ Some configurations of anchors rectangles are as follows:
     when the ui elements contain text or other elements of fixed size that do not scale vertically).
 
 *   **Anchor Point**: An anchor point is an anchor rectangle with no width or height. While ui elements with an anchor
-    point will not scale with the parent its relative position will be the same. If an anchor point and its UI element
+    point will not scale with the parent its relative position will be the same. If an anchor point and its UI element are
     3/4ths of the way down from the screen the element will remain 3/4ths of the way down.
 
 Pivot
