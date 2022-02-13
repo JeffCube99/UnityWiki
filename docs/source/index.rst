@@ -7,6 +7,13 @@ Welcome to Unity Wiki!
 
     This project is under active development.
 
+Links to Other Useful Wikis
+===========================
+
+*   `GameDevelopmentWiki <https://gamedevelopmentwiki.readthedocs.io/en/latest/>`_
+*   `WikiHub <https://wikihub.readthedocs.io/en/latest/>`_
+
+
 ..  toctree::
     :maxdepth: 2
     :caption: Contents:
