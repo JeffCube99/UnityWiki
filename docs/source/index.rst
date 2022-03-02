@@ -20,6 +20,7 @@ Links to Other Useful Wikis
 
     version_control/index.rst
     basics/index.rst
+    game_architecture/index.rst
     controlling_characters/index.rst
     tiles/index.rst
     animation_2d/index.rst

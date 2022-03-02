@@ -7,3 +7,4 @@ Scripting
 
     coroutines
     order_of_execution
+    editor

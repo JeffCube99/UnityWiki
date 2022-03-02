@@ -31,8 +31,25 @@ Installation
 
 Install GitHub Desktop from https://desktop.github.com/ and follow the installation instructions
 
-Adding Your Repository
-----------------------
+
+Add An Existing Project
+-----------------------
+
+Lets say we have an existing project located at ``C:\UnityProjects\ExampleProject``. To create a git repository
+from this project follow these steps:
+
+#.  Open and sign into GitHub Destkop
+#.  Go to **File > New repository...**
+#.  Given that our project is located at ``C:\UnityProjects\ExampleProject`` we set ``ExampleProject`` for the
+    **Name** and ``C:\UnityProjects`` for the **Local path**.
+#.  Under the **Git ignore** option select **Unity**
+#.  If the existing project uses Git LFS, Github Desktop may prompt you to initialize Git LFS. If it does
+    click on **Initialize Git LFS**
+#.  After initializing the repository, you can publish it by clicking on the **Publish repository** button at the
+    top left of the GitHub Destkop window.
+
+Clone from an online repository
+-------------------------------
 
 #.  Go to **File > Options** and sign into your GitHub account
 #.  Select **Current Repository dropdown > Add dropdown > Clone repository**
