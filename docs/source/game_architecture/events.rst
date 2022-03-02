@@ -1,6 +1,6 @@
-##########
-Events 2.0
-##########
+######
+Events
+######
 
 
 **"Something has happened and I would like you (script) to respond now"**
