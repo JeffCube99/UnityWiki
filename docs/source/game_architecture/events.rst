@@ -30,7 +30,7 @@ Event Architecture: Action Events
 
     For more about Action Events see `Delegates, Events, Actions and Funcs - The Observer Pattern (Unity & C#) <https://youtu.be/UWMmib1RYFE>`_
 
-..  image:: /_images/action_event_system_diagram.png
+..  image:: /_images/action_event_system_diagram.svg
 
 ..  dropdown:: **Publisher.cs**
 
@@ -97,14 +97,14 @@ Example
 
 Click to download :download:`ActionEventSystemExample.unitypackage </_downloads/ActionEventSystemExample.unitypackage>`.
 
-..  image:: /_images/action_event_system_example_diagram.png
+..  image:: /_images/action_event_system_example_diagram.svg
 
 .. _UnityEvents:
 
 Event Architecture: Unity Events
 ################################
 
-..  image:: /_images/unity_event_system_diagram.png
+..  image:: /_images/unity_event_system_diagram.svg
 
 ..  dropdown:: **Publisher.cs**
 
@@ -157,7 +157,7 @@ Example
 
 Click to download :download:`UnityEventSystemExample.unitypackage </_downloads/UnityEventSystemExample.unitypackage>`.
 
-..  image:: /_images/unity_event_system_example_diagram.png
+..  image:: /_images/unity_event_system_example_diagram.svg
 
 
 Event Architecture: Scriptable Objects
@@ -171,7 +171,7 @@ Event Architecture: Scriptable Objects
 
     For a video demo see  `ScriptableObject Events In Unity (C# Tutorial) | Unity Scriptable Objects <https://youtu.be/gXD2z_kkAXs>`_
 
-..  image:: /_images/scriptable_object_event_system_diagram.png
+..  image:: /_images/scriptable_object_event_system_diagram.svg
 
 
 ..  dropdown:: **GameEvent.cs + GameEventListener.cs (Zero Argument Scriptable Object Event System)**
@@ -400,4 +400,4 @@ Example
 
 Click to download :download:`ScriptableObjectEventSystemExample.unitypackage </_downloads/ScriptableObjectEventSystemExample.unitypackage>`.
 
-..  image:: /_images/scriptable_object_event_system_example_diagram.png
+..  image:: /_images/scriptable_object_event_system_example_diagram.svg
