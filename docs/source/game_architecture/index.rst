@@ -8,3 +8,4 @@ Game Architecture
     information_transfer
     events
     states
+    managing_collections
