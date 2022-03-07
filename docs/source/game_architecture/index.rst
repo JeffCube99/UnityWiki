@@ -9,3 +9,5 @@ Game Architecture
     events
     states
     managing_collections
+    utilities
+    audio
