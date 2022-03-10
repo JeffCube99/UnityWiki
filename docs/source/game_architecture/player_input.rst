@@ -71,7 +71,7 @@ Input Binding Remapping
 ***********************
 
 Your game can have the player remap input bindings with the push of a button. This can be accomplished by getting
-a reference to an input action and running action.PerformInteractiveRebinding(bindingIndex). Input bindings can
+a reference to an input action and running ``action.PerformInteractiveRebinding(bindingIndex)``. Input bindings can
 be extracted from actions through a for loop and you can create a custom editor so that the developer can click on
 a dropdown to select a specific binding that they want to remap. Below is the script one can use to quickly remap
 bindings. All that needs to be done is to call the ``Rebind()`` method on a OnButtonClick event.
@@ -160,6 +160,9 @@ bindings. All that needs to be done is to call the ``Rebind()`` method on a OnBu
                 }
             }
         }
+
+Example
+=======
 
 ..  note::
 
