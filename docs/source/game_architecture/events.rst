@@ -159,6 +159,7 @@ Click to download :download:`UnityEventSystemExample.unitypackage </_downloads/U
 
 ..  image:: /_images/unity_event_system_example_diagram.svg
 
+.. _Event_Architecture_Scriptable_Objects:
 
 Event Architecture: Scriptable Objects
 ######################################

@@ -11,3 +11,4 @@ Game Architecture
     managing_collections
     utilities
     audio
+    player_input
