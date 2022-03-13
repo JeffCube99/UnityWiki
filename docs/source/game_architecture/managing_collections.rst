@@ -21,6 +21,8 @@ objects when the game requires more objects spawned. Additionally, instead of de
 with them, we use `SetActive(false) <https://docs.unity3d.com/ScriptReference/GameObject.SetActive.html>`_.
 This allows the ObjectPooler to call SetActive(true) to reuse the game objects again.
 
+.. _Object_Pooling_Scriptable_Objects:
+
 ***********************************************
 Object Pooling Architecture: Scriptable Objects
 ***********************************************

@@ -14,6 +14,8 @@ and drag in a new menu button you also have to add the scene manager to the scen
 Alternatively you could add the scene manager logic to a scriptable object. You can then drag the scriptable object
 into the OnClick unity event without having to create a game object in the scene.
 
+.. _Scene_Management_Utilities:
+
 Scene Management Utilities
 ##########################
 

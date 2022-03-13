@@ -241,6 +241,3 @@ Adding Dynamite Implementation
 
     ..  image:: /_images/game_state_rps_so_2.png
 
-
-State Example: Rock Paper Scissors
-==================================
