@@ -164,14 +164,16 @@ bindings. All that needs to be done is to call the ``Rebind()`` method on a OnBu
 Example
 =======
 
-..  note::
+..  important::::
 
-    The following example requires the following 2 packages to be installed:
+    This example requires the following packages to be installed:
 
-    *   TextMeshPro
+    *   TextMeshPro Essentials
     *   Input System
 
 Click to download the input rebinding example :download:`InputSystemRebindExample.unitypackage </_downloads/InputSystemRebindExample.unitypackage>`.
+
+.. _Scriptable_Object_Input_Events:
 
 Scriptable Object Input Events
 ##############################
@@ -300,13 +302,15 @@ scriptable objects. Now we shall do the same thing except the scriptable object 
 Example
 *******
 
-..  note::
-
-    The following example requires the following 2 packages to be installed:
-
-    *   TextMeshPro
-    *   Input System
-
 Click to download :download:`ScriptableObjectInputSystemExample.unitypackage </_downloads/ScriptableObjectInputSystemExample.unitypackage>`.
 
-This example also includes utilities for remapping Input bindings as seen in the section :ref:`Input_Binding_Remapping`
+..  important::
+
+    This example requires the following packages to be installed:
+
+    *   TextMeshPro Essentials
+    *   Input System
+
+..  note::
+
+    This example also includes utilities for remapping Input bindings as seen in the section :ref:`Input_Binding_Remapping`

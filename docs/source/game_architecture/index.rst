@@ -12,3 +12,5 @@ Game Architecture
     utilities
     audio
     player_input
+    ui
+    templates

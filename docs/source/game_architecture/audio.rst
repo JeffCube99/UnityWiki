@@ -2,6 +2,8 @@
 Audio
 #####
 
+.. _Managing_Audio_With_Scriptable_Objects:
+
 Managing Audio With Scriptable Objects
 ######################################
 
@@ -43,8 +45,8 @@ Click to download :download:`ScriptableObjectAudioManagementExample.unitypackage
 
     This example also includes the following packages:
 
-    *   ScriptableObjectPoolingExample.unitypackage
-    *   ScriptableObjectSceneManagementUtilities.unitypackage
+    *   ScriptableObjectPoolingExample.unitypackage (See :ref:`Object_Pooling_Scriptable_Objects`)
+    *   ScriptableObjectSceneManagementUtilities.unitypackage (See :ref:`Scene_Management_Utilities`)
 
     So when you are importing, take care to make sure things are not overwritten / duplicated if you have downloaded
     those packages in the past.
