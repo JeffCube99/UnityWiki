@@ -35,8 +35,8 @@ Description of Major Components:
 *   SoundAsset.cs
 
     *   A Scriptable object
-    *   Has a reference to an AudioSource Preset + AudioSourceManager
-    *   When it plays audio it asks for sources from the AudioSourceManager and applies the preset
+    *   Has a reference to an audio clip, audio mixer group, volume level, and AudioSourceManager
+    *   When it plays audio it asks for sources from the AudioSourceManager and applies the above
         settings to the source before playing it.
 
 Click to download :download:`ScriptableObjectAudioManagementExample.unitypackage </_downloads/ScriptableObjectAudioManagementExample.unitypackage>`.
