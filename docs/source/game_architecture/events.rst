@@ -402,3 +402,194 @@ Example
 Click to download :download:`ScriptableObjectEventSystemExample.unitypackage </_downloads/ScriptableObjectEventSystemExample.unitypackage>`.
 
 ..  image:: /_images/scriptable_object_event_system_example_diagram.svg
+
+
+.. _Event_Architecture_Scriptable_Objects_V2:
+
+Event Architecture: Scriptable Objects V2
+#########################################
+
+We can refactor the above implementation for scriptable objects events so that:
+
+*   Listeners are able to recieve any type of information
+*   The game event listener component we add to game objects can listen in on multiple events
+
+Because the data passed is an object, it is the responsibility of the scripts receiving the data
+to cast the information to the correct type.
+
+You can find the updated code and example below:
+
+
+..  dropdown:: **GameEvent.cs + GameEventListener.cs (Single Object Argument Scriptable Object Event System)**
+
+    ..  code-block:: c#
+
+        using System.Collections.Generic;
+        using UnityEngine;
+
+        // GameEvent
+        // GameEventListeners subscribe to the GameEvent asset
+        // Other Scripts call the GameEvent's Raise() method
+
+        // The CreateAssetMenu attribute allows us to create scriptable object assets in the editor
+        // In the Editor: Right Click > Create > ScriptableObjects > GameEvent
+        [CreateAssetMenu(fileName = "New GameEvent", menuName = "ScriptableObjects/GameEvent")]
+        public class GameEvent : ScriptableObject
+        {
+            private readonly List<GameEventListener> eventListeners = new List<GameEventListener>();
+
+            public void Raise()
+            {
+                RaiseListeners(null);
+            }
+
+            protected void RaiseListeners(object data)
+            {
+                // We go through the listeners in reverse in case some destroy themselves after the event is raised.
+                for (int i = eventListeners.Count - 1; i >= 0; i--)
+                {
+                    eventListeners[i].OnEventRaised(data);
+                }
+            }
+
+            public void RegisterListener(GameEventListener listener)
+            {
+                // Check to see that the eventListeners list does not already contain the target listener
+                if (!eventListeners.Contains(listener))
+                {
+                    eventListeners.Add(listener);
+                }
+            }
+
+            public void UnregisterListener(GameEventListener listener)
+            {
+                // Check to see that the eventListeners list contains the target listener
+                if (eventListeners.Contains(listener))
+                {
+                    eventListeners.Remove(listener);
+                }
+            }
+        }
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using UnityEngine.Events;
+
+        // We make this class Serializable so that its properties are displayed in the inspector
+        // when added to the GameEventListenerComponent's listeners list.
+        [System.Serializable]
+        public class GameEventListener
+        {
+            [Tooltip("Event to register with.")]
+            public GameEvent Event;
+
+            [Tooltip("Response to invoke when event is raised.")]
+            public UnityEvent<object> Response;
+
+            // We invoke the UnityEvent when we the GameEvent is raised
+            public void OnEventRaised(object data)
+            {
+                Response.Invoke(data);
+            }
+        }
+
+..  dropdown:: **IntGameEvent.cs (Adds a Raise function that accepts an int)**
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+
+        // GameEvent
+        // IntGameEventListeners subscribe to the IntGameEvent asset
+        // Other Scripts call the IntGameEvent's Raise(int) method
+
+        // The CreateAssetMenu attribute allows us to create scriptable object assets in the editor
+        // In the Editor: Right Click > Create > ScriptableObjects > IntGameEvent
+        [CreateAssetMenu(fileName = "New IntGameEvent", menuName = "ScriptableObjects/IntGameEvent")]
+        public class IntGameEvent : GameEvent
+        {
+            public void Raise(int data)
+            {
+                RaiseListeners(data);
+            }
+        }
+
+..  dropdown:: **GameEventListenerComponent.cs (Attachable to Game Objects. Can listen into multiple Game Events)**
+
+    ..  code-block:: c#
+
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+
+        public class GameEventListenerComponent : MonoBehaviour
+        {
+            public List<GameEventListener> listeners;
+
+            private void OnEnable()
+            {
+                foreach (GameEventListener listener in listeners)
+                {
+                    listener.Event.RegisterListener(listener);
+                }
+            }
+
+            private void OnDisable()
+            {
+                foreach (GameEventListener listener in listeners)
+                {
+                    listener.Event.UnregisterListener(listener);
+                }
+            }
+        }
+
+..  dropdown:: **Publisher.cs + Subscriber.cs**
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using UnityEngine.Events;
+
+        // Note: We do not reference scriptable object events in this class.
+        // Scriptable object event references are set in the unity editor.
+        public class Publisher : MonoBehaviour
+        {
+            public UnityEvent buttonPressNoArugmentEvent;
+            public UnityEvent<int> buttonPressIntEvent;
+
+            void Update()
+            {
+                // When any key is pressed, raise the GameEvent asset
+                if (Input.anyKeyDown)
+                {
+                    buttonPressNoArugmentEvent.Invoke();
+                    buttonPressIntEvent.Invoke(42);
+                }
+            }
+        }
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+
+        // Note: We do not reference scriptable object events in this class.
+        // Scriptable object event references are set in the unity editor.
+        public class Subscriber : MonoBehaviour
+        {
+            public void LogEventWithNoArguments()
+            {
+                Debug.Log("eventWithNoArguments has been invoked");
+            }
+
+            public void LogEventWithIntArgument(object data)
+            {
+                int number = (int)data;
+                Debug.Log($"eventWithIntArgument has been invoked with value {number}");
+            }
+        }
+
+Example
+*******
+
+Click to download :download:`ScriptableObjectEventSystemV2Example.unitypackage </_downloads/ScriptableObjectEventSystemV2Example.unitypackage>`.

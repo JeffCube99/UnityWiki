@@ -29,9 +29,14 @@ Creating Animations From A Single PNG of Images
     window select **Slice > Grid By Cell Count**. From there select the number of rows and columns to divide your image
     by. When you have the settings you want, click the **Apply** button in the upper right hand side of the Sprite
     Editor Window.
-#.  Next drag your PNG into a scene. You will then be prompted to specify a location where you will
-    create a new animation asset. Select the location and the animation as well as an animation controller will be
-    created.
+#.  Next select the sprites under your sliced PNG and drag them into a scene. You will then be prompted to specify a
+    location where you will create a new animation asset. Select the location and the animation as well as an
+    animation controller will be created.
+
+    ..  note::
+
+        If you want to create an animation without creating an animation controller, select all of your sprites
+        for the animation in the project window, right click them and select **Create > Animation**.
 
     ..  note::
 
