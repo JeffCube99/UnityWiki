@@ -314,3 +314,167 @@ Click to download :download:`ScriptableObjectInputSystemExample.unitypackage </_
 ..  note::
 
     This example also includes utilities for remapping Input bindings as seen in the section :ref:`Input_Binding_Remapping`
+
+.. _Scriptable_Object_Input_Events_V2:
+
+Scriptable Object Input Events V2
+#################################
+
+We can refactor the above implementation for scriptable objects events so that:
+
+*   The game event listener component we add to game objects can listen in on multiple events.
+
+You can find the updated code and example below:
+
+..  dropdown:: **InputActionEvent.cs + InputActionEventListener.cs**
+
+    ..  code-block:: c#
+
+        using System.Collections.Generic;
+        using UnityEngine;
+        using UnityEngine.InputSystem;
+
+        [CreateAssetMenu(fileName = "NewInputActionEvent", menuName = "ScriptableObjects/Events/InputActionEvent")]
+        public class InputActionEvent : ScriptableObject
+        {
+            public InputActionReference inputActionReference;
+            public bool raiseOnStarted;
+            public bool raiseOnPerformed;
+            public bool raiseOnCancelled;
+
+            private readonly List<InputActionEventListener> eventListeners = new List<InputActionEventListener>();
+
+            public void Raise(InputAction.CallbackContext context)
+            {
+                // We go through the listeners in reverse in case some destroy themselves after the event is raised.
+                for (int i = eventListeners.Count - 1; i >= 0; i--)
+                {
+                    eventListeners[i].OnEventRaised(context);
+                }
+            }
+
+            public void RegisterListener(InputActionEventListener listener)
+            {
+                // Check to see that the eventListeners list does not already contain the target listener
+                if (!eventListeners.Contains(listener))
+                {
+                    eventListeners.Add(listener);
+                }
+            }
+
+            public void UnregisterListener(InputActionEventListener listener)
+            {
+                // Check to see that the eventListeners list contains the target listener
+                if (eventListeners.Contains(listener))
+                {
+                    eventListeners.Remove(listener);
+                }
+            }
+
+            private void OnEnable()
+            {
+                if (inputActionReference != null)
+                {
+                    InputAction action = inputActionReference.action;
+                    // We need to make sure the action is enabled otherwise the input will not be processed.
+                    action.Enable();
+
+                    if (raiseOnStarted)
+                        action.started += Raise;
+
+                    if (raiseOnPerformed)
+                        action.performed += Raise;
+
+                    if (raiseOnCancelled)
+                        action.canceled += Raise;
+                }
+            }
+
+            private void OnDisable()
+            {
+                if (inputActionReference != null)
+                {
+                    InputAction action = inputActionReference.action;
+                    if (raiseOnStarted)
+                        action.started -= Raise;
+
+                    if (raiseOnPerformed)
+                        action.performed -= Raise;
+
+                    if (raiseOnCancelled)
+                        action.canceled -= Raise;
+                }
+            }
+        }
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using UnityEngine.Events;
+        using UnityEngine.InputSystem;
+
+        // We make this class Serializable so that its properties are displayed in the inspector
+        // when added to the InputActionEventListenerComponent's listeners list.
+        [System.Serializable]
+        public class InputActionEventListener
+        {
+            [Tooltip("Event to register with.")]
+            public InputActionEvent Event;
+
+            [Tooltip("Response to invoke when event is raised.")]
+            public UnityEvent<InputAction.CallbackContext> Response;
+
+            // We invoke the UnityEvent when we the GameEvent is raised
+            public void OnEventRaised(InputAction.CallbackContext context)
+            {
+                Response.Invoke(context);
+            }
+        }
+
+..  dropdown:: **InputActionEvent.cs + InputActionEventListenerComponent.cs**
+
+    ..  code-block:: c#
+
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+
+        public class InputActionEventListenerComponent : MonoBehaviour
+        {
+            public List<InputActionEventListener> listeners;
+
+            private void OnEnable()
+            {
+                // Registers each listener to the GameEvent so OnEventRaised() is called if the GameEvent is raised
+                foreach (InputActionEventListener listener in listeners)
+                {
+                    listener.Event.RegisterListener(listener);
+                }
+            }
+
+            private void OnDisable()
+            {
+                // Unregisters each listener from the GameEvent since OnEventRaised() does not need to be invoked when disabled.
+                foreach (InputActionEventListener listener in listeners)
+                {
+                    listener.Event.UnregisterListener(listener);
+                }
+            }
+        }
+
+
+Example
+*******
+
+Click to download :download:`ScriptableObjectInputSystemV2Example.unitypackage </_downloads/ScriptableObjectInputSystemV2Example.unitypackage>`.
+
+..  important::
+
+    This example requires the following packages to be installed:
+
+    *   TextMeshPro Essentials
+    *   Input System
+
+..  note::
+
+    This example also includes utilities for remapping Input bindings as seen in the section :ref:`Input_Binding_Remapping`
