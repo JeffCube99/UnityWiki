@@ -29,3 +29,12 @@ Following a 2D Character
         and add a collider to the Bounding Shape 2D so that
         the cameras movement doesnt go beyond the boundaries of our collider we set in the scene. Make sure the collider
         is set to trigger.
+
+Folliwing a Teleporting Player
+==============================
+
+If a player is being followed by a cinemachine camera and teleports suddenly, the cinemachine camera will then
+move erratically to keep up with the player which can be visually unpleasing. If you want the camera to teleport with
+the player without moving erratically, use the
+`OnTargetObjectWarped(Transform, Vector3) <https://docs.unity3d.com/Packages/com.unity.cinemachine@2.3/api/Cinemachine.CinemachineVirtualCamera.html#Cinemachine_CinemachineVirtualCamera_OnTargetObjectWarped_Transform_Vector3_>`_
+method to notify the camera that the player transform has teleported with a position delta.

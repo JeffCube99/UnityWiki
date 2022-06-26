@@ -241,3 +241,155 @@ Adding Dynamite Implementation
 
     ..  image:: /_images/game_state_rps_so_2.png
 
+
+Scriptable Object Variables
+===========================
+
+Lets say you have a scene with the name ``level_0`` and you use the string ``level_0`` in some of your scripts.
+Maybe at some point you change the level name or you want the level to be replaced by a scene with the name ``level_1``.
+In this scenario you would have to track down each use of the ``level_0`` string and replace it with ``level_1``. Instead
+of repeating this process every time the scene name is altered, you could make a reference to a scriptable object
+storing the strings value. Now if the string needs to be altered all you would have to do is change the string inside
+the scriptable object.
+
+Implementation
+--------------
+
+*   **FloatVariable**
+
+    *   A scriptable object that Contains the property ``value`` with the type float
+
+*   **FloatReference**
+
+    *   Contains a property ``floatVariable`` of type ``FloatVariable`` as well as property of ``constantValue`` of type ``float``
+    *   The user can opt to use the value of the constant or float variable by specifying the boolean property ``useConstant``
+    *   scripts retrieve a float from FloatReference using the ``value`` property.
+
+*   Other scriptable objects of different types can be built off of the same framework of the 2 above classes.
+
+..  dropdown:: The ``FloatVariable`` scriptable object and ``Float Reference`` class:
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using System;
+
+        [CreateAssetMenu(fileName = "New FloatVariable", menuName = "ScriptableObjects/Variables/FloatVariable")]
+        [Serializable]
+        public class FloatVariable : ScriptableObject
+        {
+            public float value;
+        }
+
+    ..  code-block:: c#
+
+        using System;
+
+        [Serializable]
+        public class FloatReference
+        {
+            public bool useConstant;
+            public float constantValue;
+            public FloatVariable floatVariable;
+
+            public float value
+            {
+                get
+                {
+                    if (useConstant)
+                    {
+                        return constantValue;
+                    }
+                    else
+                    {
+                        return floatVariable.value;
+                    }
+                }
+            }
+        }
+
+..  dropdown:: The ``StringVariable`` scriptable object and ``StringReference`` class:
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using System;
+
+        [CreateAssetMenu(fileName = "New StringVariable", menuName = "ScriptableObjects/Variables/StringVariable")]
+        [Serializable]
+        public class StringVariable : ScriptableObject
+        {
+            public string value;
+        }
+
+    ..  code-block:: c#
+
+        using System;
+
+        [Serializable]
+        public class StringReference
+        {
+            public bool useConstant;
+            public string constantValue;
+            public StringVariable stringVariable;
+
+            public string value
+            {
+                get
+                {
+                    if (useConstant)
+                    {
+                        return constantValue;
+                    }
+                    else
+                    {
+                        return stringVariable.value;
+                    }
+                }
+            }
+        }
+
+..  dropdown:: An example script that uses scriptable object variables:
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+
+        public class TestScript : MonoBehaviour
+        {
+            public FloatVariable health;
+            public FloatReference healthReference;
+            public StringVariable name;
+            public StringReference nameReference;
+
+            private void Start()
+            {
+                InteractWithFloatVariable();
+                InteractWithStringVariable();
+            }
+
+            private void InteractWithFloatVariable()
+            {
+                Debug.Log($"Health equals {health.value}");
+                health.value += 1;
+                Debug.Log($"Adding 1 to health");
+                Debug.Log($"New Health equals {health.value}");
+
+                Debug.Log($"Health reference equals {healthReference.value}");
+            }
+
+            private void InteractWithStringVariable()
+            {
+                Debug.Log($"Name equals {name.value}");
+                name.value += "bob";
+                Debug.Log($"Adding 'bob' to Name");
+                Debug.Log($"New Name equals {name.value}");
+
+                Debug.Log($"Name reference equals {nameReference.value}");
+            }
+        }
+
+Example
+-------
+
+Click to download :download:`ScriptableObjectVariablesExample.unitypackage </_downloads/ScriptableObjectVariablesExample.unitypackage>`.
