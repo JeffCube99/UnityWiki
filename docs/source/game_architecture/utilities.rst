@@ -19,6 +19,11 @@ into the OnClick unity event without having to create a game object in the scene
 Scene Management Utilities
 ##########################
 
+With this scene manager, you have access to a scriptable object with functions that can:
+
+*   Load scenes by name or index.
+*   Load scenes through scriptable object string / int variables.
+
 Click to download :download:`ScriptableObjectSceneManagementUtilities.unitypackage </_downloads/ScriptableObjectSceneManagementUtilities.unitypackage>`.
 
 ..  important::
@@ -26,6 +31,11 @@ Click to download :download:`ScriptableObjectSceneManagementUtilities.unitypacka
     To get the example scenes working you must add both scenes to the build settings.
     Navigate to **File > Build Settings** and click on the **Add Open Scenes** button after opening each scene.
 
-With the above you have access to a scriptable object with functions that can:
+..  warning::
 
-*   Load scenes by string or index.
+    This example also includes the following packages:
+
+    *   ScriptableObjectVariablesExample.unitypackage (See :ref:`Scriptable_Object_Variables`)
+
+    So when you are importing, take care to make sure things are not overwritten / duplicated if you have downloaded
+    those packages in the past.

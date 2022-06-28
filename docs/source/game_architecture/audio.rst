@@ -19,10 +19,10 @@ Example
 
 Description of Major Components:
 
-*   AudioMixerManager.cs
+*   AudioMixerGroupManager.cs
 
     *   A scriptable object
-    *   Has reference to a audio mixer
+    *   Has reference to a audio mixer and the name of an audio group.
     *   Use sliders + events to set audio levels + set slider values on start.
 
 *   AudioSourceManager.cs
