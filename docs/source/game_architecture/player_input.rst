@@ -83,7 +83,9 @@ bindings. All that needs to be done is to call the ``Rebind()`` method on a OnBu
 
     ..  image:: /_images/binding_index_example.png
 
-
+Additionally you can quickly reset the input bindings back to the default state with the push of a button. This is
+accomplished by getting a reference to the input action asset and running ``map.RemoveAllBindingOverrides()`` for
+each InputActionMap in the asset's action maps.
 
 ..  dropdown:: **RebindInputMenuController.cs**
 
@@ -104,6 +106,11 @@ bindings. All that needs to be done is to call the ``Rebind()`` method on a OnBu
             private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
 
             void Start()
+            {
+                RefreshRebindText();
+            }
+
+            public void RefreshRebindText()
             {
                 rebindButtonText.text = GetInputActionKeyBindingName();
             }
@@ -143,6 +150,7 @@ bindings. All that needs to be done is to call the ``Rebind()`` method on a OnBu
 
         }
 
+        #if UNITY_EDITOR
         [CustomEditor(typeof(RebindInputMenuController))]
         public class customRebindInputMenuControllerInspector : Editor
         {
@@ -169,6 +177,27 @@ bindings. All that needs to be done is to call the ``Rebind()`` method on a OnBu
                 }
             }
         }
+        #endif
+
+
+..  dropdown:: **InputSystemUtilities.cs**
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using UnityEngine.InputSystem;
+
+        [CreateAssetMenu(fileName = "InputSystemUtilities", menuName = "ScriptableObjects/Utilities/InputSystemUtilities")]
+        public class InputSystemUtilities : ScriptableObject
+        {
+            public void ResetAllBindings(InputActionAsset inputActionAsset)
+            {
+                foreach (InputActionMap map in inputActionAsset.actionMaps)
+                {
+                    map.RemoveAllBindingOverrides();
+                }
+            }
+        }
 
 Example
 =======
@@ -179,6 +208,15 @@ Example
 
     *   TextMeshPro Essentials
     *   Input System
+
+..  warning::
+
+    This example also includes the following packages:
+
+    *   ScriptableObjectEventSystemV2Example.unitypackage (See :ref:`Event_Architecture_Scriptable_Objects_V2`)
+
+    So when you are importing, take care to make sure things are not overwritten / duplicated if you have downloaded
+    those packages in the past.
 
 Click to download the input rebinding example :download:`InputSystemRebindExample.unitypackage </_downloads/InputSystemRebindExample.unitypackage>`.
 
@@ -484,6 +522,11 @@ Click to download :download:`ScriptableObjectInputSystemV2Example.unitypackage <
     *   TextMeshPro Essentials
     *   Input System
 
-..  note::
+..  warning::
 
-    This example also includes utilities for remapping Input bindings as seen in the section :ref:`Input_Binding_Remapping`
+    This example also includes the following packages:
+
+    *   InputSystemRebindExample.unitypackage (See :ref:`Input_Binding_Remapping`)
+
+    So when you are importing, take care to make sure things are not overwritten / duplicated if you have downloaded
+    those packages in the past.
