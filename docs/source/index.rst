@@ -34,3 +34,4 @@ Links to Other Useful Wikis
     physics/index.rst
     scripting/index.rst
     performance/performance.rst
+    mouse/index.rst

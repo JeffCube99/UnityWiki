@@ -522,6 +522,11 @@ Click to download :download:`ScriptableObjectInputSystemV2Example.unitypackage <
     *   TextMeshPro Essentials
     *   Input System
 
-..  note::
+..  warning::
 
-    This example also includes utilities for remapping Input bindings as seen in the section :ref:`Input_Binding_Remapping`
+    This example also includes the following packages:
+
+    *   InputSystemRebindExample.unitypackage (See :ref:`Input_Binding_Remapping`)
+
+    So when you are importing, take care to make sure things are not overwritten / duplicated if you have downloaded
+    those packages in the past.
