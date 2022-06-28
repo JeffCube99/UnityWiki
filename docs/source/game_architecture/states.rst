@@ -241,6 +241,7 @@ Adding Dynamite Implementation
 
     ..  image:: /_images/game_state_rps_so_2.png
 
+.. _Scriptable_Object_Variables:
 
 Scriptable Object Variables
 ===========================
