@@ -358,7 +358,7 @@ Unity can convert unity objects into JSON text through
     types, see `JSON Serialization <https://docs.unity3d.com/Manual/JSONSerialization.html>`_
 
 
-.. dropdown:: A class that saves and loads information from a save file.
+.. dropdown:: A class that saves and loads information from a JSON save file.
 
     ..  code-block:: c#
 
@@ -414,3 +414,451 @@ Unity can convert unity objects into JSON text through
                 }
             }
         }
+
+Using Binary Serialization
+--------------------------
+
+In unity you can save data to custom binary files. These files are harder to read than json files and make them
+slightly more secure.
+
+.. dropdown:: A class that saves and loads information from a BINARY save file.
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using System.IO; // Needed for us to use `Path` and `File` classes
+        using System.Runtime.Serialization.Formatters.Binary; // Needed for us to use the `BinaryFormatter` class
+
+        public class LevelManager : MonoBehaviour
+        {
+            public int levelsUnlocked;
+
+            private static string SAVE_FILE_PATH;
+
+            private void Awake()
+            {
+                // Define the location of the save file.
+                SAVE_FILE_PATH = Path.Combine(Application.persistentDataPath, "savefile.bin");
+            }
+
+            // We use LevelData to store the number of levels the player has unlocked.
+            // `[System.Serializable]` is needed for any class saved to a binary file
+            [System.Serializable]
+            class LevelData
+            {
+                public int levelsUnlocked;
+            }
+
+            public void SaveProgress()
+            {
+                // Store information in a new LevelData class
+                LevelData data = new LevelData();
+                data.levelsUnlocked = levelsUnlocked;
+
+                // Use a binary formatter combined with a file stream to save the data to a file at SAVE_FILE_PATH
+                BinaryFormatter formatter = new BinaryFormatter();
+                FileStream stream = new FileStream(SAVE_FILE_PATH, FileMode.Create);
+                formatter.Serialize(stream, data);
+
+                // Close the stream after we are finished using it
+                stream.Close();
+            }
+
+            public void LoadProgress()
+            {
+                // We only load information if the save file exists
+                if (File.Exists(SAVE_FILE_PATH))
+                {
+                    // Load the data from the savefile using the binary formatter and filestream.
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    FileStream stream = new FileStream(SAVE_FILE_PATH, FileMode.Open);
+                    LevelData data = formatter.Deserialize(stream) as LevelData;
+
+                    // Close the stream after we are finished using it
+                    stream.Close();
+
+                    // Retrieve the levelsUnlocked from the loaded LevelData class
+                    levelsUnlocked = data.levelsUnlocked;
+                }
+                else
+                {
+                    Debug.LogError("Save file not found in " + SAVE_FILE_PATH);
+                    return;
+                }
+            }
+        }
+
+
+Scriptable Object Save System Example
+-------------------------------------
+
+..  note::
+
+    Some of the code in this example was lifted from `Save SCRIPTABLE OBJECTS - Unity Tutorial <https://www.youtube.com/watch?v=Bv-Qie4ISWg>`_
+
+This save system is useful if your game stores its information inside scriptable objects. Scriptable
+objects can use this system to store their data in binary files. You can coordinate the saving of
+data throughout the game with a use of a central scriptable object that has references to all other scriptable
+objects that contain data. Additionally its supports multiple save files.
+
+Implementation:
+
+*   **ISaveLoad.cs**
+
+    *   An interface for scriptable objects that allows them to work within the save system.
+    *   The interface makes the scriptable object responsible for saving and loading its own data.
+
+*   **SaveSystemUtilities.cs**
+
+    *   Utility functions that allow for the saving and loading of data to binary files.
+    *   Contains functions that help identify the saves that do and do not exist as well as functions to generate new
+        save names if the need arises
+
+*   **SaveSystem.cs**
+
+    *   A scriptable object you can use in game to coordinate saving and loading game data.
+    *   The save system contains reference to scriptable objects that implement the ISaveLoad inteface
+
+..  dropdown:: **ISaveLoad.cs**
+
+    ..  code-block:: c#
+
+        public interface ISaveLoad
+        {
+            // Returns the name the class gives to the data. This name should be unique to the class
+            // instance and should not be held by other classes implementing this inteface to avoid save collisions.
+            string GetDataName();
+
+            // Classes that implement this function should save their data in file with a path
+            // that incorporates the save name. If an error is encountered during the save process
+            // this function should return a string about the error. Otherwise it returns a null / empty string.
+            string Save(string saveName);
+
+            // Classes that implement this function should load their data from file with a path
+            // that incorporates the save name. If an error is encountered during the load process
+            // this function should return a string about the error. Otherwise it returns a null / empty string.
+            string Load(string saveName);
+
+            // Resets the class to a default state. Used when the player starts a new game.
+            // If an error is encountered during the reset process
+            // this function should return a string about the error. Otherwise it returns a null / empty string.
+            string Reset();
+        }
+
+
+..  dropdown:: **SaveSystemUtilities.cs**
+
+    ..  code-block:: c#
+
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using System.IO;
+        using System.Runtime.Serialization.Formatters.Binary;
+
+        /// <summary>
+        /// These utilities are built for a save system where:
+        ///     *   Each save game has a particular name. That name is used as a parent directory
+        ///         that houses all files for that save game.
+        ///     *   One can have multiple save games.
+        /// </summary>
+        public static class SaveSystemUtilities
+        {
+            const string SAVE_FILE_EXTENSION = ".bin";
+            const string PARENT_SAVE_DIRECTORY_NAME = "saves";
+            const string DEFAULT_SAVE_NAME = "NewGame";
+
+            // Returns the parent directory that contains all save directories
+            private static string GetSaveSystemParentDirectory()
+            {
+                return Path.Combine(Application.persistentDataPath, PARENT_SAVE_DIRECTORY_NAME);
+            }
+
+            // Returns a path for a save directory with a given save name
+            private static string GetSaveDirectoryPath(string saveName)
+            {
+                return Path.Combine(GetSaveSystemParentDirectory(), saveName);
+            }
+
+            // Returns a filepath that incorporates the name of the data and save name.
+            private static string GetSaveDataFilePath(string dataName, string saveName)
+            {
+                return Path.Combine(GetSaveDirectoryPath(saveName), dataName + SAVE_FILE_EXTENSION);
+            }
+
+            private static void CreateSaveDirectories(string saveName)
+            {
+                string saveSystemDirectoryPath = GetSaveSystemParentDirectory();
+                string saveDirectoryPath = GetSaveDirectoryPath(saveName);
+                if (!Directory.Exists(saveSystemDirectoryPath))
+                {
+                    Directory.CreateDirectory(saveSystemDirectoryPath);
+                }
+                if (!Directory.Exists(saveDirectoryPath))
+                {
+                    Directory.CreateDirectory(saveDirectoryPath);
+                }
+            }
+
+            // Save your data to a file with a path that incorporates the name of the data and save file name.
+            public static void Save<T>(T data, string dataName, string saveName)
+            {
+                // If the directories we save files to have not been created, create them.
+                CreateSaveDirectories(saveName);
+
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                string saveDataFilePath = GetSaveDataFilePath(dataName, saveName);
+                FileStream fileStream = new FileStream(saveDataFilePath, FileMode.Create);
+                binaryFormatter.Serialize(fileStream, data);
+                fileStream.Close();
+            }
+
+            // Attempts to load the data for the specified data under the save file.
+            // If the data is found it returns it, otherwise it returns the default value of the type.
+            public static T Load<T>(string dataName, string saveName)
+            {
+                T data = default;
+                if (SaveDataExists(dataName, saveName))
+                {
+                    string saveDataFilePath = GetSaveDataFilePath(dataName, saveName);
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    FileStream fileStream = new FileStream(saveDataFilePath, FileMode.Open);
+                    data = (T)binaryFormatter.Deserialize(fileStream);
+                }
+
+                return data;
+            }
+
+            // Returns true if the save (directory) exists
+            public static bool SaveExists(string saveName)
+            {
+                string saveDirectoryPath = GetSaveDirectoryPath(saveName);
+                return Directory.Exists(saveDirectoryPath);
+            }
+
+            // Returns true if the save file exists for data under a save file name
+            public static bool SaveDataExists(string dataName, string saveName)
+            {
+                string saveDataFilePath = GetSaveDataFilePath(dataName, saveName);
+                return File.Exists(saveDataFilePath);
+            }
+
+            // Deletes a save (directory) if it exists
+            public static void DeleteSave(string saveName)
+            {
+                if (SaveExists(saveName))
+                {
+                    // Delete the save directory and its subdirectories.
+                    Directory.Delete(GetSaveDirectoryPath(saveName), true);
+                }
+            }
+
+            // Returns a list of all save names that exist
+            public static List<string> GetAllSaveNames()
+            {
+                List<string> saveNames = new List<string>();
+                DirectoryInfo directoryInfo = new DirectoryInfo(GetSaveSystemParentDirectory());
+                DirectoryInfo[] directories = directoryInfo.GetDirectories();
+                foreach (DirectoryInfo directory in directories)
+                {
+                    saveNames.Add(directory.Name);
+                }
+                return saveNames;
+            }
+
+            // Generates a save name that has not been used yet.
+            public static string GenerateNewSaveName()
+            {
+                string saveName;
+                int count = 0;
+
+                do
+                {
+                    saveName = DEFAULT_SAVE_NAME + count;
+                    count += 1;
+                }
+                while (SaveExists(saveName));
+
+                return saveName;
+            }
+        }
+
+
+..  dropdown:: **SaveSystem.cs**
+
+    ..  code-block:: c#
+
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using UnityEngine.Events;
+
+        /// <summary>
+        /// The Save System helps to coordinate the saving and loading of game data
+        /// into scriptable objects that implement the ISaveLoad interface.
+        /// </summary>
+        [CreateAssetMenu(fileName = "SaveSystem", menuName = "ScriptableObjects/SaveLoadGame/SaveSystem")]
+        public class SaveSystem : ScriptableObject
+        {
+            // The current save name. This is kept in memory for convenience.
+            public string currentSaveName;
+            // List of scriptable objects (that implement the ISaveLoad interface) that  save / load data
+            public List<ScriptableObject> gameDataObjects;
+
+            // UnityEvents that are triggered in the case of errors
+            public UnityEvent<string> OnSaveError;
+            public UnityEvent<string> OnLoadError;
+            public UnityEvent<string> OnStartGameError;
+
+            // Returns a list of objects that have implemented the ISaveLoad intefrace.
+            // Any object that has not implemented the interface will not be included.
+            private List<ISaveLoad> GetSaveLoadObjects()
+            {
+                List<ISaveLoad> saveLoadObjects = new List<ISaveLoad>();
+                foreach (ScriptableObject gameDataObject in gameDataObjects)
+                {
+                    if (gameDataObject is ISaveLoad)
+                    {
+                        ISaveLoad saveloadObject = (ISaveLoad)gameDataObject;
+                        saveLoadObjects.Add(saveloadObject);
+                    }
+                }
+                return saveLoadObjects;
+            }
+
+            // Checks to see that objects that are saving and loading each save to
+            // a unique file name.
+            private bool SaveCollisionsDetected(string saveName)
+            {
+                List<ISaveLoad> saveLoadObjects = GetSaveLoadObjects();
+                List<string> dataNames = new List<string>();
+                foreach (ISaveLoad saveLoadObject in saveLoadObjects)
+                {
+                    string dataName = saveLoadObject.GetDataName();
+                    if (dataNames.Contains(dataName))
+                    {
+                        OnSaveError.Invoke($"Save Collision Detected. Multiple Objects attempting to save using the same data name: {dataName}");
+                        return true;
+                    }
+                    else
+                    {
+                        dataNames.Add(dataName);
+                    }
+                }
+                return false;
+            }
+
+            // Goes through each game data object and invokes its save method
+            public void SaveGame(string saveName)
+            {
+                // Do noting if the save name is not set / valid
+                if (string.IsNullOrEmpty(saveName))
+                {
+                    OnSaveError.Invoke($"The current save name {saveName} is not a valid name");
+                    return;
+                }
+
+
+                // Do a check to make sure there are no save collisions.
+                if (SaveCollisionsDetected(saveName))
+                {
+                    return;
+                }
+
+                // Set the current save name to the game we are saving
+                currentSaveName = saveName;
+
+                // Trigger each object's save method
+                List<ISaveLoad> saveLoadObjects = GetSaveLoadObjects();
+                foreach (ISaveLoad saveLoadObject in saveLoadObjects)
+                {
+                    string errorMessage = saveLoadObject.Save(saveName);
+
+                    // stop saving data if an error is detected
+                    if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        OnSaveError.Invoke(errorMessage);
+                        return;
+                    }
+                }
+            }
+
+            // Save each game data object using the current save file name we are using
+            public void SaveGame()
+            {
+                SaveGame(currentSaveName);
+            }
+
+            // Goes through each game data object and invokes its load method
+            public void LoadGame(string saveName)
+            {
+                if (SaveSystemUtilities.SaveExists(saveName))
+                {
+                    // Set the current save name to the game we are loading
+                    currentSaveName = saveName;
+
+                    // Trigger each object's load method
+                    List<ISaveLoad> saveLoadObjects = GetSaveLoadObjects();
+                    foreach (ISaveLoad saveLoadObject in saveLoadObjects)
+                    {
+                        string errorMessage = saveLoadObject.Load(saveName);
+
+                        // stop loading data if an error is detected
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            OnSaveError.Invoke(errorMessage);
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    OnLoadError.Invoke($"The save file {saveName} does not exist");
+                }
+            }
+
+            // Goes through each game data object and invokes its reset method
+            public void SetupNewGame(string saveName)
+            {
+                // Set the current save name to the game we are starting
+                currentSaveName = saveName;
+
+                // Do noting if the save name is not set / valid
+                if (string.IsNullOrEmpty(saveName))
+                {
+                    OnStartGameError.Invoke($"The current save name {saveName} is not a valid name");
+                    return;
+                }
+
+                // Trigger each object's reset method
+                List<ISaveLoad> saveLoadObjects = GetSaveLoadObjects();
+                foreach (ISaveLoad saveLoadObject in saveLoadObjects)
+                {
+                    string errorMessage = saveLoadObject.Reset();
+
+                    // stop resetting data if an error is detected
+                    if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        OnStartGameError.Invoke(errorMessage);
+                        return;
+                    }
+                }
+
+                // Save the game
+                SaveGame();
+            }
+
+            public void DeleteGame(string saveName)
+            {
+                if (SaveSystemUtilities.SaveExists(saveName))
+                {
+                    SaveSystemUtilities.DeleteSave(saveName);
+                }
+            }
+
+        }
+
+Example
+*******
+
+Click to download :download:`ScriptableObjectSaveSystemExample.unitypackage </_downloads/ScriptableObjectSaveSystemExample.unitypackage>`.
