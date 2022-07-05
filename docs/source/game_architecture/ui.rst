@@ -86,3 +86,35 @@ Example
 *******
 
 Click to download :download:`UIManagementExample.unitypackage </_downloads/UIManagementExample.unitypackage>`.
+
+UI Organization Through Prefab Variants
+#######################################
+
+When crafting the UI for your game, you may find yourself deciding on changing the way certain buttons
+appear / behave. You may have prefabs for each of these button types but what if you wanted to change
+the font style for all buttons? You would have to go into each of the button prefabs and update the font used.
+But what if there was a better way?
+
+Start using prefab variants. You could start with a base button class and create many child prefabs from that base
+class. Then if you wanted to change the font, you could simply adjust the font in the base prefab and watch it spread
+to all children prefabs.
+
+The below example showcases a standard menu created from prefabs and prefab variants making it very easy to modify.
+
+Example
+*******
+
+..  important::
+
+    This example requires the following packages to be installed:
+
+    *   TextMeshPro Essentials
+
+..  warning::
+
+    This example also includes the following packages:
+
+    *   UIManagementExample.unitypackage (See :ref:`UI_Element_Based_System`)
+
+
+Click to download :download:`UIPrefabVariantSystemExample.unitypackage </_downloads/UIPrefabVariantSystemExample.unitypackage>`.
