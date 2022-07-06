@@ -14,3 +14,4 @@ Game Architecture
     player_input
     ui
     templates
+    user_data
