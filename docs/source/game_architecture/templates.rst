@@ -32,12 +32,6 @@ Click to download :download:`TemplateProject.unitypackage </_downloads/TemplateP
 Template Project V2:
 ####################
 
-..  note::
-
-    This project is created to the above Template Project but with updgraded Input and Event System packages.
-
-Click to download :download:`TemplateProjectV2.unitypackage </_downloads/TemplateProjectV2.unitypackage>`.
-
 ..  important::
 
     This template requires the following packages to be installed:
@@ -58,4 +52,37 @@ Click to download :download:`TemplateProjectV2.unitypackage </_downloads/Templat
 
 ..  note::
 
+    This project is created to the above Template Project but with upgraded Input and Event System packages.
+
+..  note::
+
     This project includes audio assets from `kenny.nl <https://www.kenney.nl/assets/interface-sounds>`_
+
+Click to download :download:`TemplateProjectV2.unitypackage </_downloads/TemplateProjectV2.unitypackage>`.
+
+
+Template Project V3:
+####################
+
+..  important::
+
+    This template requires the following packages to be installed:
+
+    *   TextMeshPro Essentials
+    *   Input System
+
+..  warning::
+
+    The following template includes gaming architecture elements from the following example packages:
+
+    *   ScriptableObjectEventSystemV2Example.unitypackage (See :ref:`Event_Architecture_Scriptable_Objects_V2`)
+    *   ScriptableObjectInputSystemV2Example.unitypackage (See :ref:`Scriptable_Object_Input_Events_V2`)
+    *   ScriptableObjectAudioManagementExample.unitypackage (See :ref:`Managing_Audio_With_Scriptable_Objects`)
+
+    Additionally, the music used in this template (Illicit Activities by Ketsa) is not for commercial use.
+
+..  note::
+
+    This project was created to incorporate new updates from its supporting packages.
+
+Click to download :download:`TemplateProjectV3.unitypackage </_downloads/TemplateProjectV3.unitypackage>`.
