@@ -64,15 +64,15 @@ Set Up
 
         If you do not see the **Any iOS Device** option and you are using a windows device, close out of unity and
         disconnect your iOS device from your computer. Next download iTunes to your windows device.
-        After installing iTunes, restart your computer, reconnect your iOS device, and re open the Unity Editor.
+        After installing iTunes, restart your computer, re-open the Unity Editor, and reconnect your iOS device.
         Then you should see **Any iOS Device** option. For more information see the video:
         `Unity Remote on iPhone With Windows PC (WORKS) <https://youtu.be/eAFIg5JaHyw>`_
 
         ..  note::
 
             Sometimes the **Any iOS Device** option will not present itself right away. In my case
-            I had the unity editor open and uninstalled iTunes before the option presented itself. Afterwards
-            I closed and re opened the unity editor before attempting to play it on the iPhone
+            I had the unity editor open and uninstalled iTunes before the option presented itself. Make sure iTunes
+            is installed before attempting to run Unity Remote on the iPhone.
 
 #.  In the Unity Editor, click on the play button. You should see the game start playing on your iOS device.
 
