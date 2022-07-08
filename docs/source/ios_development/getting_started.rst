@@ -11,7 +11,7 @@ Quickstart
 ##########
 
 *   If you want to run a game in the editor on a iOS device, see :ref:`Unity_Remote`.
-*   If you want to build and run it on an iOS device see :ref:`Unity_XCode` (Requires a MAC).
+*   If you want to build and run it on an iOS device see :ref:`Unity_iOS_Build` (Requires a MAC).
 
 First Steps
 ###########
@@ -97,10 +97,59 @@ Set Up
         If you already have an event system game object with the new input system, delete it and then create a new one.
         The new event system should be using the Old Standalone Input Module.
 
-.. _Unity_XCode:
+.. _Unity_iOS_Build:
 
-***********
-Unity XCode
-***********
+***************
+Unity iOS Build
+***************
+
+..  note::
+
+    Before following these steps make sure you:
+
+    *   Are using a Mac computer
+    *   Have updated the XCode application
+
+#.  Add iOS Build Support to your unity installation. You can add iOS Build Support inside Unity Hub by navigating to
+    the **Installs** tab, clicking the triple dots next to your chosen installation, and selecting **Add Modules**
+#.  In the Unity Editor, navigate to **File > Build Settings** and switch the platform to iOS.
+#.  Inside the Build Settings window click **Build** and select a folder to build to.
+#.  After the build is complete, navigate to your build folder and open the **.xcodeproj** project file.
+#.  To build your game in Xcode, you must connect your Apple ID to Xcode. To do this in Xcode select
+    **Xcode > Preferences**, select the **Accounts** tab and add your Apple ID.
+#.  Next under Signing & Capabilities, click the checkbox that says Automatically manage signing, and
+    choose your team associated with your account.
+
+    ..  image:: /_images/xcode_signing_settings.png
+
+#.  Connect your iPhone to your computer. In the Xcode top bar you should be able to click and select your iPhone that
+    Xcode will build to.
+
+    ..  image:: /_images/xcode_iphone_connection.png
+
+    ..  image:: /_images/xcode_iphone_connection_selected.png
+
+#.  Click on the play button in Xcode. This will build the app to your iPhone.
+#.  After the build completes, on your iPhone you should be able to see your application. You can then open and play it.
+
+..  important::
+
+    When attempting to build the game to your iPhone you may get the following error on your computer:
+
+    ..  error::
+
+        Could not launch: The operation couldn't be completed. Unable to launch ... because it has an invalid code signature,
+        inadequate entitlements or its profile has not been explicitly trusted by the user.
+
+    On your iPhone it may give you an error:
+
+    ..  error::
+
+        Untrusted Developer: your device management settings do not allow using apps from developer ... on this ipone.
+        You can allow using these apps in Settings.
+
+    To resolve this error, on your iPhone go to **Settings > General > VPN & Device Management**. Under Developer App
+    select the untrusted apple developer and press the **Trust ...** Option. From this point you should be able to launch
+    the app on your iPhone.
 
 
