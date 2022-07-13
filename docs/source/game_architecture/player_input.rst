@@ -7,6 +7,8 @@ Player Input System
 ..  contents::
     :local:
 
+.. _Unity_Input_System:
+
 Using the Unity Input System Package
 ####################################
 
