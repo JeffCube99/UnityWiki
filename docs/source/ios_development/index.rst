@@ -6,3 +6,4 @@ iOS Development
     :caption: Contents:
 
     getting_started
+    player_input
