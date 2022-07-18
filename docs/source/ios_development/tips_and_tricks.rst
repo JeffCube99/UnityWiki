@@ -1,6 +1,6 @@
-=====================
-Mouse Tips And Tricks
-=====================
+===================
+iOS Tips And Tricks
+===================
 
 Configuring Game Orientation
 ============================
