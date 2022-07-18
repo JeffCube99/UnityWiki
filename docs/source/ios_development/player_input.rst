@@ -331,3 +331,166 @@ Example
 
 Click to download :download:`EnhancedTouchDataExample.unitypackage </_downloads/EnhancedTouchDataExample.unitypackage>`.
 
+
+Processing Touch Data Example
+#############################
+
+In the following code we are able to do more with processing touch input from the `EnhancedTouch.Touch <https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/manual/Touch.html#enhancedtouchtouch-class>`_
+class. We have different behaviors for handling a single vs multiple touches.
+
+Key Takeaways:
+**************
+
+*   We enable Enhanced Touch features by calling ``EnhancedTouchSupport.Enable();``
+*   We connect Touch events to functions when enabling the TouchVisualizer (``Touch.onFingerDown += OnFingerDown;``).
+*   We detect how many touches are occuring using ``Touch.activeTouches.Count`` and execute different behaviors
+    depending on the amount of touches detected.
+*   We extract touch data from individual touches using ``Touch.activeTouches[n]``.
+
+..  note::
+
+    In this example we gather touch data from ``Touch.activeTouches instead`` of ``Touch.activeFingers``
+    since, at the time, touch data from fingers behaved in an odd way. For example, when the user's finger stopped moving,
+    the `TouchPhase <https://docs.unity3d.com/ScriptReference/TouchPhase.html>`_ property of the touch data from ``Touch.activeFingers`` still registered as being
+    ``Moved`` instead of stationary. Additionally the `delta <https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/api/UnityEngine.InputSystem.EnhancedTouch.Touch.html#UnityEngine_InputSystem_EnhancedTouch_Touch_delta>`_
+    property would never reach 0. This was in contrast to touch data gathered from ``Touch.activeTouches`` which had phases and deltas that behaved
+    as expected when a user's finger stopped moving.
+
+..  dropdown:: **MultiTouchController.cs**
+
+    ..  code-block:: c#
+
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using UnityEngine.InputSystem.EnhancedTouch;
+        using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+        using TouchPhase = UnityEngine.InputSystem.TouchPhase;
+
+        public class MultiTouchController : MonoBehaviour
+        {
+            [SerializeField] private GameObject targetObject;
+            [SerializeField] private Camera mainCamera;
+            [SerializeField] private float rotationScaling;
+            [SerializeField] private float zoomScaling;
+            [SerializeField] private float maxFov;
+            [SerializeField] private float minFov;
+
+            private bool isTouching;
+            private Plane xyPlane;
+
+            private void Awake()
+            {
+                // We need to call EnhancedTouchSupport.Enable() to use the EnhancedTouch.Touch API.
+                EnhancedTouchSupport.Enable();
+            }
+
+            void Start()
+            {
+                // We assume the user is not touching the screen at the start
+                isTouching = false;
+
+                xyPlane = new Plane(Vector3.forward, Vector3.zero);
+            }
+
+            // Connect Touch events to functions inside this class
+            private void OnEnable()
+            {
+                Touch.onFingerDown += OnFingerDown;
+                Touch.onFingerUp += OnFingerUp;
+            }
+
+            // Remove links to Touch events when this class is disabled
+            private void OnDisable()
+            {
+                Touch.onFingerDown -= OnFingerDown;
+                Touch.onFingerUp -= OnFingerUp;
+            }
+
+            public void OnFingerDown(Finger finger)
+            {
+                isTouching = true;
+            }
+
+            public void OnFingerUp(Finger finger)
+            {
+                if (Touch.activeFingers.Count == 0)
+                {
+                    isTouching = false;
+                }
+            }
+
+            private void Handle2ActiveTouches()
+            {
+                Touch touch0 = Touch.activeTouches[0];
+                Touch touch1 = Touch.activeTouches[1];
+                if (touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved)
+                {
+                    // handle position
+                    Vector2 currentPosition = (touch1.screenPosition + touch0.screenPosition) / 2;
+                    Vector2 previousPosition = (touch1.screenPosition - touch1.delta + touch0.screenPosition - touch0.delta) / 2;
+                    Vector3 currentWorldPosition = TouchUtilities.GetTouchPositionOnPlane(xyPlane, currentPosition);
+                    Vector3 previousWorldPosition = TouchUtilities.GetTouchPositionOnPlane(xyPlane, previousPosition);
+                    Vector3 delta = currentWorldPosition - previousWorldPosition;
+                    targetObject.transform.position += new Vector3(delta.x, delta.y, 0);
+
+                    // handle rotation
+                    Vector2 currentDirection = touch1.screenPosition - touch0.screenPosition;
+                    Vector2 previousDirection = (touch1.screenPosition - touch1.delta) - (touch0.screenPosition - touch0.delta);
+                    float angle = Vector2.SignedAngle(previousDirection, currentDirection);
+                    targetObject.transform.Rotate(new Vector3(0, 0, angle), Space.World);
+
+                    // handle zoom
+                    float currentDistance = currentDirection.magnitude;
+                    float previousDistance = previousDirection.magnitude;
+                    float zoomMagnitude = (currentDistance - previousDistance) * zoomScaling;
+                    float newFov = mainCamera.fieldOfView / (1+zoomMagnitude);
+                    if (zoomMagnitude < 0)
+                    {
+                        newFov = mainCamera.fieldOfView * (1-zoomMagnitude);
+                    }
+                    mainCamera.fieldOfView = Mathf.Clamp(newFov, minFov, maxFov);
+                }
+            }
+
+            private void Handle1ActiveTouch()
+            {
+                Touch touch0 = Touch.activeTouches[0];
+                if (touch0.phase == TouchPhase.Moved)
+                {
+                    // handle position
+                    Vector3 currentWorldPosition = TouchUtilities.GetTouchPositionOnPlane(xyPlane, touch0.screenPosition);
+                    Vector3 previousWorldPosition = TouchUtilities.GetTouchPositionOnPlane(xyPlane, touch0.screenPosition - touch0.delta);
+                    Vector3 delta = currentWorldPosition - previousWorldPosition;
+                    targetObject.transform.position += new Vector3(delta.x, delta.y, 0);
+                }
+            }
+
+            void Update()
+            {
+                if (isTouching)
+                {
+                    int activeTouches = Touch.activeTouches.Count;
+                    if (activeTouches >= 2)
+                    {
+                        Handle2ActiveTouches();
+                    }
+                    else if (activeTouches == 1)
+                    {
+                        Handle1ActiveTouch();
+                    }
+                }
+            }
+        }
+
+..  important::
+
+    This example requires the following packages to be installed:
+
+    *   Input System
+
+..  note::
+
+    This example also includes utilities for processing touch inputs as seen in :ref:`Touch_Utilities`
+
+Click to download :download:`EnhancedMultiTouchExample.unitypackage </_downloads/EnhancedMultiTouchExample.unitypackage>`.
