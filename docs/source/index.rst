@@ -36,3 +36,4 @@ Links to Other Useful Wikis
     performance/performance.rst
     mouse/index.rst
     ios_development/index.rst
+    external_tools/index.rst
