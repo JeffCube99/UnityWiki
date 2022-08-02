@@ -12,6 +12,7 @@ Exporting 3D Model to Unity
 
 #.  Select **File > Export model...**.
 #.  Under the Preset Dropdown Select **Unity**.
+#.  Under the format dropdown select **OBJ**.
 #.  Adjust the other export settings but make sure **Merge blocks** are selected and **Generate color map** is deselected.
 #.  Click the **Export** button.
 #.  Save the model to a new folder.
