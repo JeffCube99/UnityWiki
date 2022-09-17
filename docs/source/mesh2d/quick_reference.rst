@@ -37,7 +37,7 @@ There are 3 fields you must set when creating a Mesh in code:
 *   **mesh.vertices (Vector3[])**: Array of Vector3 that represent each vertex of our mesh
 *   **mesh.uv (Vector2[])**: Array of Vector2 that outlines the parts of the texture that match with a certain vertex.
     Textures are displayed in a square with normalized coordinates. That means that the lower left corner of a texture
-    corresponds to a uv of (0,0) and the upper left corner of a texture corresponds to a uv of (1, 1).
+    corresponds to a uv of (0,0) and the upper right corner of a texture corresponds to a uv of (1, 1).
 *   **mesh.triangles (int[])**: Array of integers that define the vertex indices. 3 make up a polygon. Every 3
     indices creates a triangle.
 
