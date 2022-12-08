@@ -593,3 +593,183 @@ Example
 *******
 
 Click to download :download:`ScriptableObjectEventSystemV2Example.unitypackage </_downloads/ScriptableObjectEventSystemV2Example.unitypackage>`.
+
+.. _Event_Architecture_Scriptable_Objects_V3:
+
+Event Architecture: Scriptable Objects V3
+#########################################
+
+This is mainly a refactoring of the V2 implementation for scriptable object events
+(:ref:`Event_Architecture_Scriptable_Objects_V2`). In summary this was done to make the link between events
+and the functions they called more explicit in the editor and code. See below for an in depth explanation:
+
+*   In V2 game event listeners existed in their own separate monobehaviors made following the links between game events
+    and the functions that should be listening to those events difficult. For example: On a game object you could have a
+    PlayerController component and a Listener component. You can have the listener component contain a ``OnPlayerHurt`` game
+    event and have it call  PlayerController's ``TakeDamage()`` function.
+    This setup works just find but if you were to create a new game object and add a PlayerController component to it,
+    you may also forget that you should also add a listener for a hurt event that calls the component's ``TakeDamage()`` function.
+*   In V3 we have done away with the listener component as we want to discourage users from making the above links
+    between events and functions that can be easy to miss. Scripts can now take the game events in as arguments
+    and register them directly with the functions they want to have called. The only downside of this is that scripts
+    that want to subscribe to these game events must be mindful of how they register and unregister functions so that they aren't
+    accidentally registered and called when they do not expect them to be.
+    (Previously the listener component automatically registerd and unregistered on the ``OnEnable``
+    ``OnDisable`` event functions.)
+*   Game events no longer send data in a general object form. In V2 this was used in order to have the listener component
+    accept any time of game event with any single argument input. Now that we have done away with the listener component,
+    We thought it was better to keep the type of data passed into the raise method explicit to avoid confusion
+*   Since we want to directly establish a link between the script functions and game events, we have decided to use
+    ``UnityEvents`` and ``UnityActions`` since they allow us to pass functions as arguments and can directly
+    register with events using the UnityEvent's ``AddListener()`` method.
+
+
+You can find the updated code and example below:
+
+
+..  dropdown:: **GameEvent.cs**
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using UnityEngine.Events;
+
+        // GameEvent
+        // Scripts can register functions with the the GameEvent asset
+        // Scripts can call the GameEvent's Raise() method
+
+        // The CreateAssetMenu attribute allows us to create scriptable object assets in the editor
+        // In the Editor: Right Click > Create > ScriptableObjects > Events > GameEvent
+        [CreateAssetMenu(fileName = "New GameEvent", menuName = "ScriptableObjects/Events/GameEvent")]
+        public class GameEvent : ScriptableObject
+        {
+            // We use a unity event as it already has the infrastructure in place to register and call functions
+            // With this event contained inside a scriptable object we will always be able to have it
+            // accept listeners and be invoked.
+            private UnityEvent gameEvent;
+
+            public void Raise()
+            {
+                gameEvent.Invoke();
+            }
+
+            public void RegisterListener(UnityAction listener)
+            {
+                gameEvent.AddListener(listener);
+            }
+
+            public void UnregisterListener(UnityAction listener)
+            {
+                gameEvent.RemoveListener(listener);
+            }
+        }
+
+..  dropdown:: **GameEventWithOneObject.cs + IntGameEvent.cs**
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+        using UnityEngine.Events;
+
+
+        // This class allows us to define multiple child GameEvents that take arguments with explicit types
+        public class GameEventWithOneArgument<T> : ScriptableObject
+        {
+            // We use a unity event as it already has the infrastructure in place to register and call functions
+            // With this event contained inside a scriptable object we will always be able to have it
+            // accept listeners and be invoked.
+            private UnityEvent<T> gameEventWithOneArgument;
+
+            public void Raise(T data)
+            {
+                gameEventWithOneArgument.Invoke(data);
+            }
+
+            public void RegisterListener(UnityAction<T> listener)
+            {
+                gameEventWithOneArgument.AddListener(listener);
+            }
+
+            public void UnregisterListener(UnityAction<T> listener)
+            {
+                gameEventWithOneArgument.RemoveListener(listener);
+            }
+        }
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+
+        // IntGameEvent
+        // Scripts can register functions with the the IntGameEvent asset
+        // Scripts can call the IntGameEvent's Raise() method
+
+        // The CreateAssetMenu attribute allows us to create scriptable object assets in the editor
+        // In the Editor: Right Click > Create > ScriptableObjects > Events > IntGameEvent
+        [CreateAssetMenu(fileName = "New IntGameEvent", menuName = "ScriptableObjects/Events/IntGameEvent")]
+        public class IntGameEvent : GameEventWithOneArgument<int>
+        {
+
+        }
+
+..  dropdown:: **Publisher.cs + Subscriber.cs**
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+
+        public class Publisher : MonoBehaviour
+        {
+            public GameEvent onButtonPressGameEvent;
+            public IntGameEvent onButtonPressIntEvent;
+
+            void Update()
+            {
+                // When any key is pressed, raise both GameEvent assets
+                if (Input.anyKeyDown)
+                {
+                    onButtonPressGameEvent.Raise();
+                    onButtonPressIntEvent.Raise(42);
+                }
+            }
+        }
+
+    ..  code-block:: c#
+
+        using UnityEngine;
+
+        public class Subscriber : MonoBehaviour
+        {
+            public GameEvent onButtonPressGameEvent;
+            public IntGameEvent onButtonPressIntEvent;
+
+            // We want to register our functions when this game object is enabled
+            private void OnEnable()
+            {
+                onButtonPressGameEvent.RegisterListener(LogEventWithNoArguments);
+                onButtonPressIntEvent.RegisterListener(LogEventWithIntArgument);
+            }
+
+            // We want to stop registering our functions when this game object is disabled
+            private void OnDisable()
+            {
+                onButtonPressGameEvent.UnregisterListener(LogEventWithNoArguments);
+                onButtonPressIntEvent.UnregisterListener(LogEventWithIntArgument);
+            }
+
+            public void LogEventWithNoArguments()
+            {
+                Debug.Log("eventWithNoArguments has been invoked");
+            }
+
+            public void LogEventWithIntArgument(int number)
+            {
+                Debug.Log($"eventWithIntArgument has been invoked with value {number}");
+            }
+        }
+
+Example
+*******
+
+Click to download :download:`ScriptableObjectEventSystemV3Example.unitypackage </_downloads/ScriptableObjectEventSystemV3Example.unitypackage>`.
+
