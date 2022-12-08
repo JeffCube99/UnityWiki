@@ -599,14 +599,16 @@ Click to download :download:`ScriptableObjectEventSystemV2Example.unitypackage <
 Event Architecture: Scriptable Objects V3
 #########################################
 
-We have refactored the V2 implementation (:ref:`Event_Architecture_Scriptable_Objects_V3`) for scriptable objects events
-to achieve the following:
+This is mainly a refactoring of the V2 implementation for scriptable object events
+(:ref:`Event_Architecture_Scriptable_Objects_V2`). In summary this was done to make the link between events
+and the functions they called more explicit in the editor and code. See below for an in depth explanation:
 
 *   In V2 game event listeners existed in their own separate monobehaviors made following the links between game events
-    and the functions that should be listening to those events difficult. For example in a game object you could
-    have a listener linked to a ``OnPlayerHurt`` game event and have it call the PlayerController's ``TakeDamage()`` function.
-    However if you were to create a new game object and add a PlayerController component to it you may also forget
-    that you should also add a listener for a hurt event that calls the component's ``TakeDamage()`` function.
+    and the functions that should be listening to those events difficult. For example: On a game object you could have a
+    PlayerController component and a Listener component. You can have the listener component contain a ``OnPlayerHurt`` game
+    event and have it call  PlayerController's ``TakeDamage()`` function.
+    This setup works just find but if you were to create a new game object and add a PlayerController component to it,
+    you may also forget that you should also add a listener for a hurt event that calls the component's ``TakeDamage()`` function.
 *   In V3 we have done away with the listener component as we want to discourage users from making the above links
     between events and functions that can be easy to miss. Scripts can now take the game events in as arguments
     and register them directly with the functions they want to have called. The only downside of this is that scripts
