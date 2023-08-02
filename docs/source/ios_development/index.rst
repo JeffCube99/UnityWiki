@@ -9,3 +9,4 @@ iOS Development
     player_input
     tips_and_tricks
     beta_testing
+    certificates
