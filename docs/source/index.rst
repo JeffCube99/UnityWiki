@@ -18,6 +18,8 @@ Links to Other Useful Wikis
     :maxdepth: 2
     :caption: Contents:
 
+    ios_development/index.rst
+    android_development/index.rst
     version_control/index.rst
     basics/index.rst
     game_architecture/index.rst
@@ -35,7 +37,6 @@ Links to Other Useful Wikis
     scripting/index.rst
     performance/performance.rst
     mouse/index.rst
-    ios_development/index.rst
     external_tools/index.rst
     universal_render_pipeline/index.rst
     polish/index.rst
