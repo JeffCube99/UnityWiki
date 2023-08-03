@@ -1,6 +1,6 @@
-###############
-Getting Started
-###############
+########################
+Getting Started With iOS
+########################
 
 **"I want to put a game on an iPhone. What is the first step?"**
 
