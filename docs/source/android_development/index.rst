@@ -6,3 +6,4 @@ Android Development
     :caption: Contents:
 
     getting_started
+    beta_testing
