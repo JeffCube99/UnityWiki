@@ -133,3 +133,9 @@ Distributing App Through Google Play Console
     need to be provided with an opt-in link. This link can be located on the Google Play Console by clicking on
     **Internal testing** on the left section, clicking the **Testers** tab on the page, and scrolling down until you see
     the **How testers join your test** and click the **Copy link** button.
+
+Notes for Following Releases
+****************************
+
+*   The next time you submit a build to the Google Play Console you need to make sure you increment the **Bundle Version Code**.
+    This is located under **Edit > Project Settings > Player > Other Settings > Identification > Bundle Version Code**
