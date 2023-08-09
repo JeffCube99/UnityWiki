@@ -10,13 +10,8 @@ Links
 
 *   A general overview of color blindness in games: `Color Blindness <https://gamedevelopmentwiki.readthedocs.io/en/latest/accessibility/color_blindness.html>`_
 
-Previewing Color Blindness In Unity
-###################################
-
-..  note::
-
-    The following tutorial is for projects using the Universal Render Pipeline. We take advantage of URP's Post Processing
-    **Color Lookup** Override.
+Simulating Color Blindness In Unity (URP)
+#########################################
 
 ..  image:: /_images/color_blind_example_result_0.PNG
 
@@ -25,10 +20,15 @@ Previewing Color Blindness In Unity
 Quickstart
 ##########
 
+..  note::
+
+    The following tutorial is for projects using the Universal Render Pipeline. We take advantage of URP's Post Processing
+    **Color Lookup** Override. For those using the Built-in Render Pipeline, check out the `Colorblind Effect Package <https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/colorblind-effect-76360>`_
+
 #.  Download the Color Blindness Simulator Unity Package Here: :download:`ColorBlindnessSimulator.unitypackage </_downloads/ColorBlindnessSimulator.unitypackage>`.
     This package contains LUTs for a variety of color blindness conditions. If you would like to learn how to create your
     own color blindness LUTs, see :ref:`Build_Your_Own_Color_Blind_LUT`.
-#.  Import the Unity Package into your project by going to **Assets > Import Package > Custom Package**
+#.  Import the Unity Package into your URP project by going to **Assets > Import Package > Custom Package**
 #.  This example uses LUTs with a height of 32 pixels. To make sure URP can accept this size go to your
     URP asset and under **Post-processing** set the LUT size to 32.
 
