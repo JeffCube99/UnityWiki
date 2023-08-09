@@ -5,6 +5,7 @@ Game Architecture
     :maxdepth: 2
     :caption: Contents:
 
+    accessibility
     information_transfer
     events
     states
