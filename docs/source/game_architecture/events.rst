@@ -603,16 +603,18 @@ This is mainly a refactoring of the V2 implementation for scriptable object even
 (:ref:`Event_Architecture_Scriptable_Objects_V2`). In summary this was done to make the link between events
 and the functions they called more explicit in the editor and code. See below for an in depth explanation:
 
-*   In V2 game event listeners existed in their own separate monobehaviors made following the links between game events
-    and the functions that should be listening to those events difficult. For example: On a game object you could have a
+*   In V2 game event listeners existed in their own separate monobehaviors. This made following links between game events
+    and functions listening to those game events difficult. For example: On a player prefab you could have a
     PlayerController component and a Listener component. You can have the listener component contain a ``OnPlayerHurt`` game
-    event and have it call  PlayerController's ``TakeDamage()`` function.
-    This setup works just find but if you were to create a new game object and add a PlayerController component to it,
-    you may also forget that you should also add a listener for a hurt event that calls the component's ``TakeDamage()`` function.
-*   In V3 we have done away with the listener component as we want to discourage users from making the above links
-    between events and functions that can be easy to miss. Scripts can now take the game events in as arguments
-    and register them directly with the functions they want to have called. The only downside of this is that scripts
-    that want to subscribe to these game events must be mindful of how they register and unregister functions so that they aren't
+    event and have it call PlayerController's ``TakeDamage()`` function when that hurt event was raised.
+    This setup works just fine. However if you wanted to create a new prefab for a different kind of player object, you may
+    start by adding a PlayerController component to it and then forget that you should also add a listener for a hurt event
+    that calls the component's ``TakeDamage()`` function since there is no specific reference to a listener in the PlayerController component.
+*   In V3 we have done away with the Game Event Listener component to discourage users from making links
+    between events and functions that can be easy to miss. Scripts must now take game events in as arguments
+    and register them directly with the methods they want to have called. The only downside of this approach is that scripts
+    that to subscribe to these game events must be mindful of how they register and unregister function to events. Failure
+    to register results in no functions called, and failure to unregister so that they aren't
     accidentally registered and called when they do not expect them to be.
     (Previously the listener component automatically registerd and unregistered on the ``OnEnable``
     ``OnDisable`` event functions.)
