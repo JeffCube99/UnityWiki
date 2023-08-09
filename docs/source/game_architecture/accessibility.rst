@@ -25,7 +25,7 @@ Previewing Color Blindness In Unity
 Quickstart
 ##########
 
-#.  Download the Color Blindness Preview Unity Package Here: :download:`ColorBlindnessSimulator.unitypackage </_downloads/ColorBlindnessSimulator.unitypackage>`.
+#.  Download the Color Blindness Simulator Unity Package Here: :download:`ColorBlindnessSimulator.unitypackage </_downloads/ColorBlindnessSimulator.unitypackage>`.
     This package contains LUTs for a variety of color blindness conditions. If you would like to learn how to create your
     own color blindness LUTs, see :ref:`Build_Your_Own_Color_Blind_LUT`.
 #.  Import the Unity Package into your project by going to **Assets > Import Package > Custom Package**

@@ -73,8 +73,8 @@ Distributing App Through Google Play Console
 
         ..  note::
 
-        The first time you build this way the build may take way longer than expected. If this is the case just cancel
-        the build, (and optionally close and re open the project) and try re building it. It may go much faster next time.
+            The first time you build this way the build may take way longer than expected. If this is the case just cancel
+            the build, (and optionally close and re open the project) and try re building it. It may go much faster next time.
 
     ..  note::
 
