@@ -57,7 +57,7 @@ Quickstart
 #.  At this point you can drag in any LUT texture into the **Lookup Texture** slot and see its effects in the Scene View
     and Game View.
 
-    ..  image:: /_images/color_blind_example_8.PNG
+    ..  image:: /_images/color_blind_example_result_1.PNG
 
     ..  note::
 
