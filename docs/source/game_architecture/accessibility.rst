@@ -40,7 +40,7 @@ Quickstart
 
     ..  image:: /_images/color_blind_example_2.PNG
 
-    ..  image:: /_images/color_blind_example_3.PNG
+    ..  image:: /_images/color_blind_example_3.png
 
 #.  Next create a new global volume (**Right click in the Hierarchy > Volume > Global Volume**)
 #.  Inside the Volume inspector, next to the profile field click the **New** button.
