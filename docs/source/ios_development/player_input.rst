@@ -9,7 +9,7 @@ Simulate Player Input With Mouse
 ################################
 
 If you don't have access to a phone you can simulate a touch screen inside the Unity Editor with the mouse by going to
-**Window > Analysis > Profiler**. This will bring up an Input Debug window. Inside window click the **Options** dropdown and select
+**Window > Analysis > Input Debugger**. This will bring up an Input Debug window. Inside window click the **Options** dropdown and select
 **Simulate Touch Input from Mouse or Pen**. Now clicking the mouse in play mode will simulate touching the screen.
 Unfortunately you cannot simulate multi touch using the mouse so to do that you must use :ref:`Unity_Remote` or build
 the project to your phone (:ref:`Unity_iOS_Build`).
