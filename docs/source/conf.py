@@ -6,6 +6,10 @@ import os
 # If runs on ReadTheDocs environment
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
+# Hack for force installing sphinx rtd theme
+if on_rtd:
+    os.system('python -m pip install --upgrade --no-cache-dir sphinx-rtd-theme')
+
 # Hack for lacking git-lfs support ReadTheDocs
 if on_rtd:
     if not os.path.exists('./git-lfs'):
