@@ -86,12 +86,13 @@ For more information on TestFlight see https://developer.apple.com/help/app-stor
     Internal group. Go to the Internal Group section on the left hand side of the webpage and click the blue "+" button
     to create a new internal group. In this example, when we create a group we will opt out of automatic distribution.
 #.  Now with the group selected, go to the **Testers** section and click the blue "+" button to add testers to the group.
-#.  After adding your testers, go to the **Builds** section and click the blue "+" button to add a build. Then from the dropdowns
-    you can select the appropriate version number and options for your builds should appear that you can then add.
+#.  After adding your testers, go back on the TestFlight Page under the **Build** section and find the build you want
+    to test. Hover your mouse under the **Groups** column of the build and click the blue "+" button that appears to add
+    your test group to the build.
 
     ..  note::
 
-        Once users have been added to the group a build has been assigned, the users in the group will be sent an email
+        Once a test group has been added to the group of a build, the users in the test group will be sent an email
         with instructions on how to download TestFlight and how to begin testing the app.
 
 #.  Users can leave feedback inside the testflight app. You can view this feedback on the app's TestFlight page under
