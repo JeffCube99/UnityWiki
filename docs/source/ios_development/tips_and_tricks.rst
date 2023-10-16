@@ -29,7 +29,7 @@ Sometimes you may see this pesky little white / black bar is always highlighted 
 
 ..  image:: /_images/homeindicator.jpg
 
-This is the home Indicator bar. To make it so that it is only hilighted when the user want's to exit from your game,
+This is the home Indicator bar. To make it so that it is only highlighted when the user wants to see it,
 do the following:
 
 #.  Go to **Edit > Project Settings** and select the **Player** column.
