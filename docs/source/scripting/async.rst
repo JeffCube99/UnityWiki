@@ -32,8 +32,8 @@ When Does The Body Of An Asynchronous Function Run?
 *   An async method runs synchronously (the function that called the async method waits) until it reaches its first await expression.
     Then it is suspended until the awaited task is complete. In the meantime control returns to the caller of the method.
 *   (As I understand it) In unity you can call ``await Task.Yield()`` to essentially suspend an async method for at minimum one frame.
-    (As I understand it) This is made possible through Unity's `UnitySynchronizationContext<https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs>`_
-    since by default async / await logic relies on the default `SynchronizationContext<https://learn.microsoft.com/en-us/archive/msdn-magazine/2011/february/msdn-magazine-parallel-computing-it-s-all-about-the-synchronizationcontext>`_
+    (As I understand it) This is made possible through Unity's `UnitySynchronizationContext <https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs>`_
+    since by default async / await logic relies on the default `SynchronizationContext <https://learn.microsoft.com/en-us/archive/msdn-magazine/2011/february/msdn-magazine-parallel-computing-it-s-all-about-the-synchronizationcontext>`_
     which has no concept of frames in unity.
 
 When Does an Asynchronous Function Stop?
@@ -316,7 +316,7 @@ Basic Asynchronous Programming
         public class PrintHelloEveryFewSecondsAsync : MonoBehaviour
         {
             private CancellationTokenSource cancellationTokenSource;
-            public int milisecondDelay = 2000;
+            public int millisecondDelay = 2000;
 
             // Start is called before the first frame update
             async void Start()
@@ -367,7 +367,7 @@ Basic Asynchronous Programming
                         cancellationToken.ThrowIfCancellationRequested();
                     }
 
-                    await Task.Delay(milisecondDelay, cancellationToken);
+                    await Task.Delay(millisecondDelay, cancellationToken);
                 }
             }
         }
