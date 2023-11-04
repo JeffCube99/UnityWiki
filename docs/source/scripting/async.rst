@@ -304,7 +304,7 @@ Basic Asynchronous Programming
 
         }
 
-.. dropdown:: Print "Hello" to the Console After Every 1.5 Seconds Number of Seconds
+.. dropdown:: Print "Hello" to the Console Every 2 Seconds
 
     ..  code-block:: c#
 
