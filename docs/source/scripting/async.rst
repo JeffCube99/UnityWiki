@@ -22,7 +22,7 @@ to check when it completes.
 ..  important::
 
     It seems that if you choose to add async functions to your scripts, the best practice
-    is to only call them . Unity allows users to add the async keyword
+    is to only call them using other async functions. Unity allows users to add the async keyword
     to event functions like ``Awake`` ``Start`` and ``OnEnable``. So you can call your
     async methods from there.
 
