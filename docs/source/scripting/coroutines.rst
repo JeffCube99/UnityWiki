@@ -9,11 +9,11 @@ Coroutines can be used to spread tasks across several frames. At a basic level c
 code in one frame until they hit a ``yield`` statement. Then then they pause execution until the next frame. In the
 next frame they then resume execution starting from the ``yield`` statement.
 
-When Do Coroutines Run?
-=======================
+When Does The Body Of A Coroutine Function Run?
+===============================================
 
-Coroutines typically resume running after the ``Update`` function returns. This can be altered based on the type of ``yield``
-expression used:
+Coroutines typically run after the ``Update`` function returns. The execution inside
+can be paused and resumed be altered based on the type of ``yield`` expression used:
 
 *   ``yield``: Resume after all ``Update`` Functions are called.
 *   ``yield WaitForSeconds``: Resume after all ``Update`` Functions after specified time delay.
@@ -111,13 +111,13 @@ Basic Coroutines
         This effect can also be accomplished using the
         `InvokeRepeating() <https://docs.unity3d.com/ScriptReference/MonoBehaviour.InvokeRepeating.html>`_ function.
 
-.. dropdown:: Print "Hello" to the Console Every Frame for a Variable Number of Seconds
+.. dropdown:: Print "Hello" to the Console After Every 2 Seconds
 
     ..  code-block:: c#
 
         public class PrintHelloEveryFewSeconds : MonoBehaviour
         {
-            public float delay = 1.5f;
+            public float delay = 2f;
 
             void Start()
             {
@@ -182,7 +182,7 @@ Basic Coroutines
 Working With Multiple Coroutines
 ================================
 
-.. dropdown:: Run Coroutines In Parallell
+.. dropdown:: Run Coroutines In Parallel
 
     ..  code-block:: c#
 
@@ -196,7 +196,7 @@ Working With Multiple Coroutines
             public void RunCoroutinesSimultaneously()
             {
                 StartCoroutine(PrintWordFor5Seconds("Hello"));
-                StartCoroutine(PrintWordFor5Seconds("Good"));
+                StartCoroutine(PrintWordFor5Seconds("Goodbye"));
             }
 
             IEnumerator PrintWordFor5Seconds(string word)
