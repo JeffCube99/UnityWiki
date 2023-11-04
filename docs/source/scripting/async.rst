@@ -586,7 +586,7 @@ Working With Multiple Async Functions
             }
         }
 
-.. dropdown:: Have Coroutines Run Other Coroutines
+.. dropdown:: Have Async Functions Run Other Async Functions
 
     ..  code-block:: c#
 
