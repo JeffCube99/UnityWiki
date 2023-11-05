@@ -67,7 +67,7 @@ Because asynchronous functions can continue to execute even when loading in new 
 It is important to have a way to terminate async functions in case things go wrong and in the worse case
 they are stuck in an infinite loop. The convention for cancelling async functions appears to be introducing
 try finally statements into the async function and raising an error when we want to exit early.
-For raising these errors we use `CancellationTokens<https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken?view=net-7.0>`_
+For raising these errors we use `CancellationTokens <https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken?view=net-7.0>`_
 
 See examples below:
 
