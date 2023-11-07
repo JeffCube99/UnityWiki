@@ -27,6 +27,8 @@ How To Setup Game Center Login
     #.  Install the SDK by going to **Window > Package Manager**. Select the **Unity Registry** dropdown and select
         the **Authentication** package. Make sure it's version is greater than or equal to 2.4.0. Otherwise you
         will need to upgrade your unity version to get access to a higher package version.
+    #.  In your unity project, make sure when the app starts to run you initialize the Unity Services SDK.
+        by calling ``await UnityServices.InitializeAsync();``. See the `UGS Manual <https://docs.unity.com/ugs/manual/overview/manual/getting-started#InitializingUGS>`_ for the full code snippet.
 
 #.  Follow the Unity `Apple Game Center Documentation <https://docs.unity.com/ugs/en-us/manual/authentication/manual/platform-signin-apple-game-center>`_
 
