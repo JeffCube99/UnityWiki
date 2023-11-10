@@ -22,7 +22,9 @@ How To Setup Game Center Login
 
 #.  Follow the `Unity Get Started Documentation <https://docs.unity.com/ugs/en-us/manual/authentication/manual/get-started>`_:
 
-    #.  Sign up for `Unity Gaming Services <https://unity.com/solutions/gaming-services>`_
+    #.  Sign up for `Unity Gaming Services <https://unity.com/solutions/gaming-services>`_. Make sure you lauch the
+        Authentication Service for your app. Sign up for the Apple Game Center identity provider and MAKE SURE
+        THE STATUS ON THE PROVIDER IS ENABLED!
     #.  Link your project to the service within the editor by going to **Edit > Project Settings**, clicking the **Services**
         row. I made a project within the Unity Gaming Services website so i just linked the existing project.
     #.  Install the SDK by going to **Window > Package Manager**. Select the **Unity Registry** dropdown and select
@@ -128,6 +130,8 @@ How To Setup Game Center Login
 
         }
 
-
+#.  If after you are still encountering errors at the GKLocalPlayer.Local.FetchItems stage (even when the authentication
+    step works) it could be because of an issue with GameCenter on your iOS device (`reddit thread <https://www.reddit.com/r/DeadAhead/comments/15wptkx/comment/jzl4xvk/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button>`_).
+    To fix it simply sign out of GameCenter on your device and sign back in.
 
 
