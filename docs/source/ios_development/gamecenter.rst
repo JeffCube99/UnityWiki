@@ -10,7 +10,7 @@ Links
 *   `Resolve Bugs With Apple UnityPackage <https://forum.unity.com/threads/unity-apple-plugin-issue.1462814/>`_
 *   `Apple Game Center - Informal Doc <https://docs.google.com/document/d/18IfxMcaYCoCHgFrMmM4gfGCHcKKnYx9iCr6DFBU-nLg/edit#heading=h.nh5j6ob4nbj3>`_
 
-How To Setup Game Center Login
+Game Center Login Setup Log #1
 ##############################
 
 ..  note::
@@ -96,8 +96,9 @@ How To Setup Game Center Login
     with other people facing the same issue. There was a `Google Doc <https://docs.google.com/document/d/18IfxMcaYCoCHgFrMmM4gfGCHcKKnYx9iCr6DFBU-nLg/edit#heading=h.nh5j6ob4nbj3>`_ posted on Oct 17 2023 by a member of Unity Technologies
     about a workaround for the issue. After looking at the document I did the following to fix the bug:
 
-    #.  I cloned the apple unity plugins repo inside my Packages folder in my unity project.
+    #.  I cloned the apple unity plugins repo outside my unity project
     #.  I did not edit the unity plugins repo and simply built all packages using the standard ``python3 build.py`` command.
+    #.  I dragged the tarball files into my unity project under the **Packages** Directory.
     #.  I added the tarball files of core and gamekit through the package manager window and then I repeated the step
         above where i made the packages custom and targeted the tvOS plugins to the editor.
     #.  I completed the step below where I added a code fix to AppleFrameworkUtility.cs script's "GetPluginLibraryPathForBuildTarget" method
@@ -134,4 +135,43 @@ How To Setup Game Center Login
     step works) it could be because of an issue with GameCenter on your iOS device (`reddit thread <https://www.reddit.com/r/DeadAhead/comments/15wptkx/comment/jzl4xvk/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button>`_).
     To fix it simply sign out of GameCenter on your device and sign back in.
 
+#.  Once we got Game Center authentication running without crashes, we ran into 2 errors when trying to display the
+    GameCenter dashboard when calling the following lines of code:
+
+    ..  code-block:: c#
+
+            var gameCenter = GKGameCenterViewController.Init(GKGameCenterViewController.GKGameCenterViewControllerState.Dashboard);
+            await gameCenter.Present();
+
+    The first error was the following:
+
+    ..  error::
+
+        This application is modifying the autolayout engine from a background thread after the engine was accessed
+        from the main thread. This can lead to engine corruption and weird crashes.
+
+    This message was raised because we tried calling the asynchronous code above from the main thread using
+    Task.Run(): ``Task.Run(() => GameCenterAsyncMethod()).Wait();``. The solution was to make our ``GameCenterAsyncMethod``
+    have a return type of void instead of Task: ``private async void GameCenterAsyncMethod()``. This method was called
+    when a unity event was raised so we just passed the function into the AddListener method: ``gameEvent.AddListener(GameCenterAsyncMethod)``
+
+    The second error was the following:
+
+    ..  error::
+
+        Default constructor not found for type Apple.GameKit.GKGameCenterViewController
+
+    To resolve this issue, inside my **Assets** folder i created a folder called **iOS** and added a file called
+    **link.xml** to it. The contents of it were as follows:
+
+    ..  code-block::
+
+        <linker>
+            <assembly fullname="Apple.Core" ignoreIfMissing="1" preserve="all"/>
+            <assembly fullname="Apple.GameKit" ignoreIfMissing="1" preserve="all"/>
+        </linker>
+
+    The attribute ``preserve="all"`` to preserve all members of the Apple.Core and Apple.GameKit assemblies so that
+    they aren't accidentally discarded like the constructor for Apple.GameKit.GKGameCenterViewController. By placing
+    this file inside **Assets/iOS** this only affects the iOS build of the project.
 
