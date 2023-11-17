@@ -175,3 +175,18 @@ Game Center Login Setup Log #1
     they aren't accidentally discarded like the constructor for Apple.GameKit.GKGameCenterViewController. By placing
     this file inside **Assets/iOS** this only affects the iOS build of the project.
 
+#.  When opening my unity project on my laptop running windows 10, I encountered the following error:
+
+    ..  error::
+
+        The type or namespace name 'PlistDocument' could not be found.
+
+    All i had to do to fix the error was go into **AppleBuildStep.cs** inside the Apple.Core package and
+    change the using statement of UnityEditor.iOS.Xcode to:
+
+    ..  code-block:: c#
+
+        #if UNITY_EDITOR_OSX || UNITY_EDITOR_WIN
+        using UnityEditor.iOS.Xcode;
+        #endif
+
