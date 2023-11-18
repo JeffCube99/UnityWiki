@@ -7,3 +7,4 @@ Android Development
 
     getting_started
     beta_testing
+    google_play_games
