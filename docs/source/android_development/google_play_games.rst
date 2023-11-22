@@ -36,7 +36,7 @@ Google Play Games Login Setup Log #1
     #.  To import the package, in the unity editor go to **Assets > Import Package > Custom Package** and select the package file. After
         installation, the package will prompt you to enable or disable **Android Auto Resolution**. I opted to enable this.
     #.  Sign into `Google Play Console <https://play.google.com/console/u/0/signup>`_, and follow the instructions for how
-        `to configure your game for Google Play Games login <https://github.com/playgameservices/play-games-plugin-for-unity#configure-your-game>`_.
+        `to configure your game for Google Play Games login <https://developers.google.com/games/services/console/enabling>`_.
         For me this involved the following:
 
         #.  In the google play console homepage i scrolled down to the Apps section and
@@ -121,7 +121,16 @@ Google Play Games Login Setup Log #1
         #.  After configuring the leaderboards, On the left hand side of Google Play Console I went to **Play Games Services > Setup and management > Testers**
             to add the emails of all my testers. Because i halready had testers on the internal track, under the **Release Tracks**
             section, I just added my internal testers.
-        #.  At this point you should be able to build and test the game with the ability to use google play services.
+        #.  At this point the app now has access to use google play services.
             You do not need to publish. For more information about this visit `this information page <https://developers.google.com/games/services/console/testpub>`_
+
+    #.  With google play console setup online we return to setting up the `Play Games Services <https://github.com/playgameservices/play-games-plugin-for-unity#configure-your-game>`_
+        plugin.
+
+        #.  On Google Play Console page. I then went to **Play Games Services > Setup and management > Leaderboards**.
+            There I clicked the **Get resources** button and selected the **Android (XML)** tab. I copied the XML to the clipboard.
+        #.  In unity I went to **Window > Google Play Games > Setup > Android Setup** and pasted the XML under the resources
+            definition section. Then I clicked the **Setup** Button.
+
 
 
