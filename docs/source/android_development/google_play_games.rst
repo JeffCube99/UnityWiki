@@ -77,7 +77,15 @@ Google Play Games Login Setup Log #1
                 **Credentials** row and clicked the **Create Credentials** button and selected the OAuth client ID
                 option.
             #.  I then filled in the app information that was presented to me in the instructions page on google play
-                console. Afterwards I clicked the **Create** button.
+                console.
+
+                ..  note::
+
+                    Google provides you a dummy fingerprint value. You need to run the command ``keytool -keystore path-to-debug-or-production-keystore -list -v``
+                    to get the SHA1 certificate fingerprint of the keystore you use to sign your app. To use the ``keytool``
+                    command you need to install JDK by following the steps in `Oracle's installation guide <https://docs.oracle.com/en/java/javase/18/install/installation-jdk-microsoft-windows-platforms.html>`_
+
+                Afterwards I clicked the **Create** button.
 
         #.  Once these steps were done I was able to select the OAuth client i just created in
             google play console and I clicked on the **Save Changes** button.
