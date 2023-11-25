@@ -140,5 +140,8 @@ Google Play Games Login Setup Log #1
         #.  In unity I went to **Window > Google Play Games > Setup > Android Setup** and pasted the XML under the resources
             definition section. Then I clicked the **Setup** Button.
 
+    #.  We opted not to setup a Web App Client ID since it is not required to submit high scores and access
+        Google Play Games.
+
 
 
