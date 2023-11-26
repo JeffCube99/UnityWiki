@@ -204,6 +204,23 @@ to read and write information from it.
 
 *   `Link to video example <https://www.youtube.com/watch?v=SmnjRCa_iO4>`_
 
+..  important::
+
+    If you reference the same scriptable object in multiple scenes and you plan on reading and writing data to that
+    object, if you happen to jump from a scene that contains the object to a scene that does not, the object can
+    be unloaded and the data contained within can be lost. To prevent this you can include the following line of code
+    in the OnEnable function inside your scriptable object to make sure it persists between scene changes:
+
+    ..  code-block:: c#
+
+        private void OnEnable()
+        {
+            // This makes sure that this object persists between scene changes
+            hideFlags = HideFlags.DontUnloadUnusedAsset;
+        }
+
+    `Link <https://discussions.unity.com/t/persistence-of-scriptableobjects-between-scenes/237648>`_ to the thread from which I found this solution.
+
 ..  warning::
 
     Changes you make to scriptable objects in play mode will persist while in the editor. If you are not careful
