@@ -93,3 +93,26 @@ Unity Ads Setup Log #1
             }
 
 #.  Refer to the documentation for `Implementing interstitial (full screen) Ads <https://docs.unity.com/ads/en-us/manual/ImplementingBasicAdsUnity>`_ in Unity
+
+
+Potential Errors
+################
+
+*   Xcode build Error
+
+    .. error::
+
+        'IronSource/IronSource.h' file not found
+
+    To fix this try:
+
+    *   If you have integrated unity ads go to **Ads Mediation > Integration Manager**. In the the ironSource
+        row click the update button.
+    *   Go to https://developers.is.com/ironsource-mobile/unity/unity-plugin/#step-5. and download
+        the IronSource.framework files. There should be instructions on the site on how to add these files to your
+        project. for me I downloaded and added IronSource.framework into /Assets/Plugins/iOS
+    *   When opening the project in xcode use the .xcworkspace file in Xcode, not the .xcodeproj file. if you're working
+        on a project that uses CocoaPods or has multiple related sub-projects, you'll typically be working with an
+        .xcworkspace. If you're working on a standalone project, you'll be using an .xcodeproj.
+    *   Try cleaning your project (Product -> Clean Build Folder) and then rebuilding it.
+    *   Update MacOS and Xcode

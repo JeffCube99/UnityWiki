@@ -187,8 +187,37 @@ Unity In-App Purchases Setup Log #1
 
 #.  `Set Up In-App Purchases on iOS <https://docs.unity.com/ugs/en-us/packages/com.unity.purchasing/4.9/manual/UnityIAPAppleConfiguration>`_
 
+    #.  Go to https://appstoreconnect.apple.com/ and sign in
+    #.  Select your app and click on the **App Store** Tab
+    #.  On the left hand side of the screen look under Features and select **In-App Purchases**
+    #.  On the In-App Purchases screen click the Plus button to create an In-App purchase. For each purchase
+        you will have to enter a type, reference name, and product ID. Note that the product ID is the same
+        ID used in Unity.
+    #.  After entering all the information click the **Create** button.
+    #.  On your new in app purchase product page scroll down to **Availability** and click the **Set Up Avaliability**
+        button. By default Apple makes your product available to all possible countries.
+    #.  Next, scroll down to the **Price Schedule** section and click the **Add Pricing** button.
+    #.  Select your base country and price for the base country.
+    #.  After clicking the **next** button you will be able to set prices across all other countries.
+    #.  Look at the rest of the in app purchase page for other in app purchase options.
 
+#.  `Test In-App Purchases on iOS <https://docs.unity.com/ugs/en-us/packages/com.unity.purchasing/4.9/manual/UnityIAPAppleConfiguration>`_
 
+    #.  Go to https://appstoreconnect.apple.com/ and sign in
+    #.  Go to the **Users and Access** section and select the **Sandbox** tab.
+    #.  Click a button to **Add Test Account** and enter in the testers information.
+
+        ..  note::
+
+            From `Apple's sandbox documentation <https://developer.apple.com/help/app-store-connect/test-in-app-purchases/create-sandbox-apple-ids/>`_
+
+            Use an email address that hasn’t been used as an Apple ID or to purchase iTunes or App Store content.
+            Consider creating a dedicated email address for each sandbox tester.
+
+            If your email service provider supports email subaddressing with a plus sign (+), you can use subaddresses
+            of a sandbox-specific address for a sandbox tester. For example, if your base sandbox email is billjames2@icloud.com,
+            you can use billjames2+UK@icloud.com, billjames2+US@icloud.com, and billjames2+JP@icloud.com as email addresses
+            for additional testers. All communications sent to the subaddresses are also sent to the base address.
 
 
 
