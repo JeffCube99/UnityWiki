@@ -48,7 +48,7 @@ Unity Ads Setup Log #1
     #.  The script is avaliable at https://docs.unity.com/ads/en-us/manual/InitializingTheUnitySDK Add the game IDs
         given to you earlier when signing up for the Unity Ads Monetization product on https://cloud.unity.com/
 
-        ..  code-block::
+        ..  code-block:: c#
 
             using UnityEngine;
             using UnityEngine.Advertisements;
