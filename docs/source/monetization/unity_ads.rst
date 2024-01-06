@@ -33,7 +33,7 @@ Unity Ads Setup Log #1
     #.  With all of my information filled out I then was presented IDS for different platforms along with a set of instructions
         I will document in the next steps
 
-#   Follow the instructions in the `Unity Ads Mediation Integration Guide <https://docs.unity.com/ads/en-us/manual/ImplementingUnityAdsInMediation>`_.
+#   Follow the instructions in the `Unity Editor LevelPlay integration <https://docs.unity.com/ads/en-us/manual/editor-levelplay-integration>`_.
 
     #.  Go to **Window > Package Manager**
     #.  Under the **Packages** Dropdown select **Unity Registry** and select the **Ads Mediation** package
@@ -41,6 +41,27 @@ Unity Ads Setup Log #1
     #.  Once the install is complete go to **Ads Mediation > Integration Manager**.
     #.  Click the **Update** button next to ironSource and press the **Import** button on the popup. You may have to
         do this multiple times until it is fully updated.
+    #.  Install and Update the UnityAds adapter
+
+#.  `Set Up Unity LevelPlay <https://developers.is.com/ironsource-mobile/general/move-to-unity-levelplay/>`_
+
+    #.  Create an ironSource account at https://platform.ironsrc.com/partners/identity/signup
+    #.  On your ironSource homepage click the **Add App** button.
+    #.  Enter your app's information.
+    #.  Enable add units (like Interstitial ads) that you want to display.
+    #.  If your app is on multiple platforms create a new app for each platform.
+    #.  Sign into https://cloud.unity.com/
+    #.  Click on the **Products** tab on the left hand side of the screen.
+    #.  Click on the **Unity Ads Monetization** product.
+    #.  Under **Setup > API Management** Generate your Level Play Service Account API Key and Monetization Stats API Access. Also take
+        note of your Organization Core ID found under **Setup > Organization Settings**.
+    #.  On IronSource navigate to **Setup > SDK networks** and add the Unity Ads network.
+    #.  When setting up unity ads enter information for the API Key (Monetization Stats API) and enter organization
+        Core ID. Make sure to enable Unity bidder auto setup which requires the Level Play Service Account API key and secret key
+        you generated.
+    #.  For each app make sure to go to **Settings > SDK Networks** and under Unity Ads setup your add placements
+        (you will need the App Store Game IDS found in the unity cloud monetization product under **Settings > Game IDs** and your Placement IDs which are found
+        found in the unity cloud monetization product under **Placements**)
 
 #.  `Initialize the SDK <https://docs.unity.com/ads/en-us/manual/InitializingTheUnitySDK>`_ in Unity
 
@@ -94,6 +115,37 @@ Unity Ads Setup Log #1
 
 #.  Refer to the documentation for `Implementing interstitial (full screen) Ads <https://docs.unity.com/ads/en-us/manual/ImplementingBasicAdsUnity>`_ in Unity
 
+#.  `Integrate Ads On IOS <https://docs.unity.com/ads/en-us/manual/iOSDeveloperIntegrations>`_
+
+    #.  Open your UnityProject's .xcworkspace file
+    #.  Click the **Pods** xcode project file and select the Podfile
+    #.  Inside the podfile add the line ``pod 'UnityAds'``. See below for an example
+
+        ..  code-block:: c#
+
+            source 'https://github.com/CocoaPods/Specs'
+            source 'https://github.com/CocoaPods/Specs.git'
+            platform :ios, '12.0'
+
+            target 'UnityFramework' do
+              pod 'IronSourceSDK', '7.7.0.0'
+              pod 'UnityAds'
+            end
+            target 'Unity-iPhone' do
+            end
+            use_frameworks!
+    #.  Afterwards open the terminal and navigate to the directory that holds the podfile. Then run the command
+        ``pod install``
+
+#.  Test Ads On Devices
+
+    #.  Sign into https://cloud.unity.com/
+    #.  Click on the **Products** tab on the left hand side of the screen.
+    #.  Click on the **Unity Ads Monetization** product.
+    #.  Click the **Testing** section
+    #.  Under the test mode section, click the **Add Test Device** button and fill out the device information.
+        Refer to https://docs.unity.com/monetization-dashboard/en-us/manual/TestDevices
+        to determine the Advertising ID for your device.
 
 Potential Errors
 ################
@@ -116,3 +168,17 @@ Potential Errors
         .xcworkspace. If you're working on a standalone project, you'll be using an .xcodeproj.
     *   Try cleaning your project (Product -> Clean Build Folder) and then rebuilding it.
     *   Update MacOS and Xcode
+
+*   Add Load Error
+
+    ..  error::
+
+        Error loading Ad Unit: Interstitial_iOS - INVALID_ARGUMENT - adMarkup is missing; objectId is missing
+
+    ..  error::
+
+        E/UnityAds: +[USRVApiSdk WebViewExposed_logError:callback:] (line:63) :: Header bidding load invocation failed: adMarkup is missing; objectId is missing
+
+    To fix this try:
+
+    *   In **Project Settings > Services > Ads** Make sure Ads are switched on.

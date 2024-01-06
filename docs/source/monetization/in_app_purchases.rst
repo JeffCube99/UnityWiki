@@ -185,6 +185,9 @@ Unity In-App Purchases Setup Log #1
         a window will pop up that asks you how to initialize the store as well as choose how to respond to each
         purchase request that is initiated.
 
+Add In-App Purchases to Apple App Store
+***************************************
+
 #.  `Set Up In-App Purchases on iOS <https://docs.unity.com/ugs/en-us/packages/com.unity.purchasing/4.9/manual/UnityIAPAppleConfiguration>`_
 
     #.  Go to https://appstoreconnect.apple.com/ and sign in
@@ -219,5 +222,18 @@ Unity In-App Purchases Setup Log #1
             you can use billjames2+UK@icloud.com, billjames2+US@icloud.com, and billjames2+JP@icloud.com as email addresses
             for additional testers. All communications sent to the subaddresses are also sent to the base address.
 
+    #.  Complete the `pre requisites <https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox#4295582>`_
+        required by apple before sandbox testing can commence.
+    $.  Make sure you are also test on a development build: (On your build settings check the box for **Development Build**)
 
+
+Add In-App Purchases to Google Play Store
+*****************************************
+
+#.  `Set Up In-App Purchases on Google Play Store <https://docs.unity.com/ugs/en-us/packages/com.unity.purchasing/4.9/manual/UnityIAPGoogleConfiguration>`_
+
+    #.  Visit https://play.google.com/console/ and sign in
+    #.  Select your app.
+    #.  On the left hand side of the window scroll down to **Products > In-app products**
+    #.  If necessary, set up a Google Payments merchant account.
 
