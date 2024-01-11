@@ -21,6 +21,7 @@ Links to Other Useful Wikis
     ios_development/index.rst
     android_development/index.rst
     monetization/index.rst
+    legal/index.rst
     version_control/index.rst
     basics/index.rst
     game_architecture/index.rst
