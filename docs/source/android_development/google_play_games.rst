@@ -91,8 +91,15 @@ Google Play Games Login Setup Log #1
             google play console and I clicked on the **Save Changes** button.
         #.  To continue with the service configuration process I had to add the play games services SDK
             to my APK to use the APIs. To do this I followed instructions found on
-            `this Google Play Game Services Page <https://developers.google.com/games/services/v1/android/quickstart>`_.
+            `this (OLD) Google Play Game Services Page <https://developers.google.com/games/services/v1/android/quickstart>`_.
             For my app I did the follwing
+
+                ..  important::::
+
+                    Looking back the google play plugin works with the latest version of the play games service.
+                    we should have not used the old Play Game Services help page, but the latest version of the play games services
+                    help page found here: https://developers.google.com/games/services/android/quickstart. If you use this replace
+                    the following instructions with the ones you find there.
 
             #.  In the unity editor I went to **Edit > Project Settings > Player.
             #.  Under Publishing Settings, i checked the box next to **Custom Main Gradle Template**
@@ -143,5 +150,38 @@ Google Play Games Login Setup Log #1
     #.  We opted not to setup a Web App Client ID since it is not required to submit high scores and access
         Google Play Games.
 
+Potential Errors
+################
 
+*   Android Build Error
 
+    .. error::
+
+        Duplicate dependencies of com.google.android.gms:play-services-games-v2 and com.google.android.gms:play-services-games:23.1.0 clash
+        with each other
+
+    To fix this try:
+
+    *   Go to the gradle template file **Assets\Plugins\Android\mainTemplate.gradle** and under dependencies
+        include the following line
+
+    ..  code-block::
+
+        dependencies {
+            ...
+            implementation "com.google.android.gms:play-services-games-v2:+"
+            ...
+        }
+
+*   Android Java Exception
+
+    ..  error::
+
+        AndroidJavaException: java.lang.ClassNotFoundException: com.google.android.gms.games.PlayGames java.lang.ClassNotFoundException: com.google.android.gms.games.PlayGames at java.lang.Class.classForName(Native Method) at java.lang.Class.forName(Class.java:454) at com.unity3d.player.UnityPlayer.nativeRender(Native Method) at com.unity3d.player.UnityPlayer.access$500(Unknown Source:1) at com.unity3d.player.UnityPlayer$e$1.handleMessage(Unknown Source:115) at android.os.Handler.dispatchMessage(Handler.java:102) at android.os.Looper.loopOnce(Looper.java:201) at android.os.Looper.loop(Looper.java:288) at com.unity3d.player.UnityPlayer$e.run(Unknown Source:21) Caused by: java.lang.ClassNotFoundException: com.google.android.gms.games.PlayGames at java.lang.Class.classForName(Native Method)  at java.lang.Class.forName(Class.java:454)  at com.unity3d.player.UnityPlayer.nativeRender(Native Method)  at com.unity3d.player.UnityPlayer.access$500(Unknown Source:1)  at com.unity3d.player.UnityPlayer$e$1.handleMessage(Unknown Source:115)  at android.os.Handler.dispatchMessage(Handler.java:102)  at android.os.Looper.loopOnce(Looper.java:201)  at android.os.Looper.loop(Looper.java:288)  at com.unity3d.player.UnityPlayer$e.run(Unknown Source:21)  at UnityEngine.AndroidJNISafe.CheckException () [0x00000] in <00000000000000000000000000000000>:0 at UnityEngine.AndroidJNISafe.FindClass (System.String name) [0x00000] in <00000000000000000000000000000000>:0 at UnityEngine.AndroidJavaClass._AndroidJ
+
+    To fix this try:
+
+    #.  Go to **Edit>Project Settings>Player**
+    #.  Under the android dropdown go to **Publishing Settings** And check the box for Custom Proguard File.
+        This should add a proguard file to **Assets\Plugins\proguard-user.txt**
+    #.  Go to **Assets\GooglePlayGames\com.google.play.games\Proguard\games.txt** and copy the text into **Assets\Plugins\proguard-user.txt**
