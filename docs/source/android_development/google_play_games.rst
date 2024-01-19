@@ -81,7 +81,9 @@ Google Play Games Login Setup Log #1
 
                 ..  note::
 
-                    Google provides you a dummy fingerprint value. You need to run the command ``keytool -keystore path-to-debug-or-production-keystore -list -v``
+                    If you use the Play App Signing service, confirm the fingerprint presented is the one actually in use
+                    by going to https://play.google.com/console and scrolling down to the Setup **App Signing** section. If you do not use
+                    this service you need to run the command ``keytool -keystore path-to-debug-or-production-keystore -list -v``
                     to get the SHA1 certificate fingerprint of the keystore you use to sign your app. To use the ``keytool``
                     command you need to install JDK by following the steps in `Oracle's installation guide <https://docs.oracle.com/en/java/javase/18/install/installation-jdk-microsoft-windows-platforms.html>`_
 
@@ -185,3 +187,55 @@ Potential Errors
     #.  Under the android dropdown go to **Publishing Settings** And check the box for Custom Proguard File.
         This should add a proguard file to **Assets\Plugins\proguard-user.txt**
     #.  Go to **Assets\GooglePlayGames\com.google.play.games\Proguard\games.txt** and copy the text into **Assets\Plugins\proguard-user.txt**
+
+
+
+*   App Not Correctly Configured to Use Google Play games services
+
+    ..  error::
+
+        **** APP NOT CORRECTLY CONFIGURED TO USE GOOGLE PLAY GAME SERVICES
+        **** DEVELOPER_ERROR
+        **** This is usually caused by one of these reasons:
+        **** (1) Your package name and certificate fingerprint do not match
+        ****     the client ID you registered in Developer Console.
+        **** (2) Your App ID was incorrectly entered.
+        **** (3) Your game settings have not been published and you are
+        ****     trying to log in with an account that is not listed as
+        ****     a test account.
+        **** (4) A server auth code was requested, but an incorrect client
+        ****     id was provided. The client id for server auth codes should
+        ****     be the client id for the game server (not the android app).
+        ****
+        **** To help you debug, here is the information about this app
+        **** Package name         : com.JeffCubeGames.TunnelTwister
+        **** Cert SHA1 fingerprint: 6B:A6:6E:AB:C0:EB:85:C7:F7:94:99:A6:BA:D4:AF:49:5E:7D:05:87
+        **** App ID from manifest : 55047623714
+        ****
+        **** Check that the above information matches your setup in
+        **** Developer Console. Also, check that you're logging in with the
+        **** right account (it should be listed in the Testers section if
+        **** your project is not yet published).
+        ****
+        **** For more information, refer to the troubleshooting guide:
+        ****   http://developers.google.com/games/services/android/troubleshooting
+        ****
+
+    To fix this I did the following:
+
+    #.  Check package name and certificate fingerprint:
+
+        #.  In unity go to **File > Build Settings > Player Settings**
+        #.  Go to the Android tab and scroll down to **Other Settings > Identification** There you should find the package
+            name.
+        #.  To compare with the package name you registered in Developer console, sign into https://play.google.com/console,
+            select your application. Under the application name you will see the package name. click the **App Integrity** section on the left hand side
+        #.  Next while still in **Player Settings** Scroll to **Publishing Settings**. Under the **Keystore** section
+            you will see the path to the keystore file unity uses to sign the android application.
+        #.  If you used the google play app signing service, to view your certificate fingerprint, sign into https://play.google.com/console,
+            select your application. Click the **App Integrity** section on the left hand side. Next to the Play App Signing
+            section click the **Settings** button. Scroll down to see the SHA1 certificate fingerprint in use.
+        #.  Next to compare your certificate fingerprint to the one used by google cloud services, go to https://console.cloud.google.com/.
+            Under **APIs & Services** section click **Credentials**. Select the credentials you use for your app and there you will find the
+            SHA-1 certificate fingerprint. Note that if there is a difference between the fingerprint on the cloud service and the
+            one displayed by play console, you should copy the one from play console into the google cloud credentials.
