@@ -166,6 +166,12 @@ Unity Level Play Ads Setup Log #1
                 }
                 #endif
 
+#.  `Add App-ads.txt to your developer website. <https://developers.is.com/ironsource-mobile/general/app-ads-txt/>`_
+
+    #.  Visit https://developers.is.com/ironsource-mobile/general/app-ads-txt/
+    #.  Copy the text of ironSource authorized resellers
+    #.  Paste the text to app-ads.txt file at the root of your developer website.
+
 
 
 Potential Errors

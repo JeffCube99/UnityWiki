@@ -224,7 +224,23 @@ Add In-App Purchases to Apple App Store
 
     #.  Complete the `pre requisites <https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox#4295582>`_
         required by apple before sandbox testing can commence.
-    $.  Make sure you are also test on a development build: (On your build settings check the box for **Development Build**)
+    #.  Make sure you are also test on a development build: (On your build settings check the box for **Development Build**)
+    #.  When all that setup is done build and run your app on xcode.
+    #.  I followed the rest of the instructions for testing in app purchases listed by apple here: https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox#3524803
+        here is a log of what I did:
+
+        #.  I built the app in unity with the **Development Build** checkbox selected
+        #.  In Xcode I clicked **Product > Clean Build Folder** and then i built the app to my device
+        #.  I was prompted to sign into my apple id as soon as the app opened.
+        #.  Afterwards i began purchasing items from inside my app. When you make the purchase it should ask you
+            to enter your sandbox password and presents the text [Environment: Sandbox] on the page.
+        #.  Once the password is input the purchase should complete.
+        #.  To clear my purchase history, on my Iphone I went to **Settings > AppStore** I clicked on my sandbox
+            account at the bottom of the list and hit the Manage button. After entering my password on the next scree
+            I clicked clear purchase history.
+        #.  To test interrupted purchases, on my Iphone I went to **Settings > AppStore** I clicked on my sandbox
+            account at the bottom of the list and hit the Manage button. After entering my password on the next scree
+            I enabled the Test Interrupted Purchases toggle.
 
 
 Add In-App Purchases to Google Play Store
@@ -236,4 +252,18 @@ Add In-App Purchases to Google Play Store
     #.  Select your app.
     #.  On the left hand side of the window scroll down to **Products > In-app products**
     #.  If necessary, set up a Google Payments merchant account.
+    #.  On the In-app products page click the button for Create product
+    #.  Define the product ID, product details, and price. Note that the product ID is the same
+        ID used in Unity.
+    #.  Click the **Activate** button after saving.
 
+#.  `Test In-App Purchases on Android <https://docs.unity.com/ugs/en-us/packages/com.unity.purchasing/4.9/manual/UnityIAPGoogleConfiguration#test-iap>`_
+
+    #.  Visit https://play.google.com/console/ and sign in
+    #.  Click the **Settings** section on the right and on the settings page click **License Testing**
+    #.  Choose the email list you want to test with.
+    #.  Click the **Save changes** button.
+    #.  Next go back to the play console homepage and select yoru app.
+    #.  Under testing click your test track and select the testers tab.
+    #.  Share the test url with the testers so that they can install the test release with in app purchases.
+    #.  To test IAP make a purchase on a device logged in with a tester google account.
