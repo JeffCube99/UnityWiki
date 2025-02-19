@@ -88,3 +88,24 @@ Unity Android Build
         The next time you build on your device you can simply overwrite the preexisting apk file with the new one.
 
 #.  Once the build is complete the game should start to run on your device.
+
+********************
+Unity Android Studio
+********************
+
+#.  Go to **File > Build Settings** and select the android option.
+#.  Make sure to uncheck the **Build App Bundle** setting.
+#.  Click the build button and and choose a location to save the APK file to.
+#.  Connect your android device to your computer and open **Android Studio**
+#.  In the terminal navigate to the directory where your APK file is located.
+#.  to install the apk to the device, run the command:
+
+    ..  code-block::
+
+        adb install YourApkName.apk
+
+    If you are overriding an existing apk run the command with a ``-r`` flag:
+
+    ..  code-block::
+
+        adb install -r YourApkName.apk

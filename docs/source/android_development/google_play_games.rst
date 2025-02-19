@@ -103,9 +103,9 @@ Google Play Games Login Setup Log #1
                     help page found here: https://developers.google.com/games/services/android/quickstart. If you use this replace
                     the following instructions with the ones you find there.
 
-            #.  In the unity editor I went to **Edit > Project Settings > Player.
+            #.  In the unity editor I went to **Edit > Project Settings > Player**.
             #.  Under Publishing Settings, i checked the box next to **Custom Main Gradle Template**
-            #.  This created a file under **Assets\Plugins\Android\mainTemplate.gradle. I then opened
+            #.  This created a file under **Assets\Plugins\Android\mainTemplate.gradle**. I then opened
                 this file and edited it to add the following lines of code to the top of the file
 
                 ..  code-block::
