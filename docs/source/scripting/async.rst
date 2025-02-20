@@ -778,7 +778,10 @@ exception set.
                 taskCompletionSource = new TaskCompletionSource<int>();
 
                 // Register a callback to cancel the TaskCompletionSource when the token is canceled
-                cancellationTokenSource.Token.Register(() => taskCompletionSource.TrySetCanceled(cancellationTokenSource.Token));
+                // We use a await using to properly dispose of CancellationTokenRegistration since it implements IAsyncDisposable
+                // We use a using statement without braces. This means the registration will be disposed at the end of the scope
+                // in this case when we exit the start method
+                await using CancellationTokenRegistration registration = cancellationTokenSource.Token.Register(() => taskCompletionSource.TrySetCanceled(cancellationTokenSource.Token));
 
                 try
                 {
