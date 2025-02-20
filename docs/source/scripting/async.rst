@@ -93,58 +93,53 @@ See examples below:
             async void Start()
             {
                 // Destroy game object after 5 seconds
-                UnityEngine.Object.Destroy(gameObject, 10);
-                await ExampleTask();
+                Destroy(gameObject, 10);
+                cancellationTokenSource = new CancellationTokenSource();
+                try
+                {
+                    await ExampleTask(cancellationTokenSource.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    Debug.Log("Operation was cancelled");
+                }
             }
 
             private void OnDestroy()
             {
-                CancelAsyncOperation();
+                CancelAndDisposeCancellationTokenSource();
             }
 
-            private void CancelAsyncOperation()
+            private void CancelCancellationTokenSource()
             {
-                if (cancellationTokenSource != null)
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
-                    Debug.Log("Cancel Async Operation");
                     cancellationTokenSource.Cancel();
                 }
             }
 
-            private async Task ExampleTask()
+            private void CancelAndDisposeCancellationTokenSource()
             {
-                try
-                {
-                    cancellationTokenSource = new CancellationTokenSource();
-                    await LoopInfinitely(cancellationTokenSource.Token);
-                }
-                catch (OperationCanceledException ex)
-                {
-                    Debug.Log("Detected Cancellation");
-                }
-                finally
-                {
-                    cancellationTokenSource.Dispose();
-                    cancellationTokenSource = null;
-                }
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
             }
 
-            private async Task LoopInfinitely(CancellationToken cancellationToken)
+            private async Task ExampleTask(CancellationToken cancellationToken)
             {
                 while (true)
                 {
                     Debug.Log("Hello World");
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
 
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-
-                    await Task.Yield();
+                    // // You could alternatively choose this method if you wanted to print every frame
+                    // if (cancellationToken.IsCancellationRequested)
+                    // {
+                    //     cancellationToken.ThrowIfCancellationRequested();
+                    // }
+                    // await Task.Yield();
                 }
             }
         }
-
 
 
 ..  dropdown:: Cancel Async Method After Time Has Passed
@@ -163,40 +158,51 @@ See examples below:
             // Start is called before the first frame update
             async void Start()
             {
-                await ExampleTask();
-            }
-
-            private async Task ExampleTask()
-            {
+                cancellationTokenSource = new CancellationTokenSource();
+                // Cancel after 5 seconds
+                cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(5));
                 try
                 {
-                    cancellationTokenSource = new CancellationTokenSource();
-                    // Cancel after 5 seconds
-                    cancellationTokenSource.CancelAfter(10000);
-                    await LoopInfinitely(cancellationTokenSource.Token);
+                    await ExampleTask(cancellationTokenSource.Token);
                 }
-                catch (OperationCanceledException ex)
+                catch (OperationCanceledException)
                 {
-                    Debug.Log("Detected Cancellation");
-                }
-                finally
-                {
-                    cancellationTokenSource.Dispose();
+                    Debug.Log("Operation was cancelled");
                 }
             }
 
-            private async Task LoopInfinitely(CancellationToken cancellationToken)
+            private void OnDestroy()
+            {
+                CancelAndDisposeCancellationTokenSource();
+            }
+
+            private void CancelCancellationTokenSource()
+            {
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
+                {
+                    cancellationTokenSource.Cancel();
+                }
+            }
+
+            private void CancelAndDisposeCancellationTokenSource()
+            {
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
+            }
+
+            private async Task ExampleTask(CancellationToken cancellationToken)
             {
                 while (true)
                 {
                     Debug.Log("Hello World");
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
 
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-
-                    await Task.Yield();
+                    // // You could alternatively choose this method if you wanted to print every frame
+                    // if (cancellationToken.IsCancellationRequested)
+                    // {
+                    //     cancellationToken.ThrowIfCancellationRequested();
+                    // }
+                    // await Task.Yield();
                 }
             }
         }
@@ -217,7 +223,15 @@ See examples below:
             // Start is called before the first frame update
             async void Start()
             {
-                await ExampleTask();
+                cancellationTokenSource = new CancellationTokenSource();
+                try
+                {
+                    await ExampleTask(cancellationTokenSource.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    Debug.Log("Operation was cancelled");
+                }
             }
 
             private void Update()
@@ -225,49 +239,42 @@ See examples below:
                 // We stop the async operation when the user presses the space bar
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    CancelAsyncOperation();
+                    CancelCancellationTokenSource();
                 }
             }
 
-            private void CancelAsyncOperation()
+            private void OnDestroy()
             {
-                if (cancellationTokenSource != null)
+                CancelAndDisposeCancellationTokenSource();
+            }
+
+            private void CancelCancellationTokenSource()
+            {
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
-                    Debug.Log("Cancel Async Operation");
                     cancellationTokenSource.Cancel();
                 }
             }
 
-            private async Task ExampleTask()
+            private void CancelAndDisposeCancellationTokenSource()
             {
-                try
-                {
-                    cancellationTokenSource = new CancellationTokenSource();
-                    await LoopInfinitely(cancellationTokenSource.Token);
-                }
-                catch (OperationCanceledException ex)
-                {
-                    Debug.Log("Detected Cancellation");
-                }
-                finally
-                {
-                    cancellationTokenSource.Dispose();
-                    cancellationTokenSource = null;
-                }
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
             }
 
-            private async Task LoopInfinitely(CancellationToken cancellationToken)
+            private async Task ExampleTask(CancellationToken cancellationToken)
             {
                 while (true)
                 {
                     Debug.Log("Hello World");
+                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
 
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-
-                    await Task.Yield();
+                    // // You could alternatively choose this method if you wanted to print every frame
+                    // if (cancellationToken.IsCancellationRequested)
+                    // {
+                    //     cancellationToken.ThrowIfCancellationRequested();
+                    // }
+                    // await Task.Yield();
                 }
             }
         }
@@ -326,16 +333,21 @@ Basic Asynchronous Programming
 
             private void OnDestroy()
             {
-                CancelAsyncOperation();
+                CancelAndDisposeCancellationTokenSource();
             }
 
-            private void CancelAsyncOperation()
+            private void CancelCancellationTokenSource()
             {
-                if (cancellationTokenSource != null)
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
-                    Debug.Log("Cancel Async Operation");
                     cancellationTokenSource.Cancel();
                 }
+            }
+
+            private void CancelAndDisposeCancellationTokenSource()
+            {
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
             }
 
             private async Task PrintHelloAsync()
@@ -403,16 +415,21 @@ Basic Asynchronous Programming
 
             private void OnDestroy()
             {
-                CancelAsyncOperation();
+                CancelAndDisposeCancellationTokenSource();
             }
 
-            private void CancelAsyncOperation()
+            private void CancelCancellationTokenSource()
             {
-                if (cancellationTokenSource != null)
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
-                    Debug.Log("Cancel Async Operation");
                     cancellationTokenSource.Cancel();
                 }
+            }
+
+            private void CancelAndDisposeCancellationTokenSource()
+            {
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
             }
 
             private async Task PrintHelloAsync()
@@ -475,16 +492,21 @@ Working With Multiple Async Functions
 
             private void OnDestroy()
             {
-                CancelAsyncOperation();
+                CancelAndDisposeCancellationTokenSource();
             }
 
-            private void CancelAsyncOperation()
+            private void CancelCancellationTokenSource()
             {
-                if (cancellationTokenSource != null)
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
-                    Debug.Log("Cancel Async Operation");
                     cancellationTokenSource.Cancel();
                 }
+            }
+
+            private void CancelAndDisposeCancellationTokenSource()
+            {
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
             }
 
             private async Task PrintHelloAsync()
@@ -547,16 +569,21 @@ Working With Multiple Async Functions
 
             private void OnDestroy()
             {
-                CancelAsyncOperation();
+                CancelAndDisposeCancellationTokenSource();
             }
 
-            private void CancelAsyncOperation()
+            private void CancelCancellationTokenSource()
             {
-                if (cancellationTokenSource != null)
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
-                    Debug.Log("Cancel Async Operation");
                     cancellationTokenSource.Cancel();
                 }
+            }
+
+            private void CancelAndDisposeCancellationTokenSource()
+            {
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
             }
 
             private async Task PrintHelloAsync()
@@ -605,18 +632,23 @@ Working With Multiple Async Functions
                 await BossMakesAnEntrance();
             }
 
-            private void OnDestroy()
+              private void OnDestroy()
             {
-                CancelAsyncOperation();
+                CancelAndDisposeCancellationTokenSource();
             }
 
-            private void CancelAsyncOperation()
+            private void CancelCancellationTokenSource()
             {
-                if (cancellationTokenSource != null)
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
                 {
-                    Debug.Log("Cancel Async Operation");
                     cancellationTokenSource.Cancel();
                 }
+            }
+
+            private void CancelAndDisposeCancellationTokenSource()
+            {
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
             }
 
             private async Task BossMakesAnEntrance()
@@ -653,3 +685,154 @@ Working With Multiple Async Functions
             }
         }
 
+Tasks
+#####
+
+Returning Values From Tasks
+***************************
+
+You can specify the return type of the task using the ``Task<return_type>`` syntax. When we await on a task with
+a return type, when the task finishes it returns a value of that type.
+
+.. dropdown:: Returning a value from a task.
+
+    ..  code-block:: c#
+
+        using System;
+        using System.Threading;
+        using System.Threading.Tasks;
+        using UnityEngine;
+
+        public class ReturningValuesFromTasks : MonoBehaviour
+        {
+            private CancellationTokenSource cancellationTokenSource;
+
+            private async void Start()
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+                try
+                {
+                    int result = await ExampleTask(cancellationTokenSource.Token);
+                    Debug.Log($"Result from async operation is {result}");
+                }
+                catch (OperationCanceledException)
+                {
+                    Debug.Log($"Operation was cancelled");
+                }
+            }
+
+            private void OnDestroy()
+            {
+                CancelAndDisposeCancellationTokenSource();
+            }
+
+            private void CancelCancellationTokenSource()
+            {
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
+                {
+                    cancellationTokenSource.Cancel();
+                }
+            }
+
+            private void CancelAndDisposeCancellationTokenSource()
+            {
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
+            }
+
+
+            private async Task<int> ExampleTask(CancellationToken cancellationToken)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
+                return 0;
+            }
+        }
+
+
+Complete, Cancel, Or Fault a Task outside the Task
+**************************************************
+
+To control a task outside the task function, like for example stopping a task when a condition is reached, you can use
+a TaskCompletionSource. Note that ``TaskCanceledException`` is invoked when awaiting a cancelled task. This is slightly
+different from the ``OperationCanceledException`` which is thrown explicitly when working with cancellation tokens.
+Also note that the exceptions passed to the ``TrySetException`` will be thrown when awaiting the task that has an
+exception set.
+
+.. dropdown:: Completing, Cancelling, Or Faulting a Task From Outside the Task
+
+    ..  code-block:: c#
+
+        using System;
+        using System.Threading;
+        using System.Threading.Tasks;
+        using UnityEngine;
+
+        public class ControlTaskFromOutsideTask : MonoBehaviour
+        {
+            private CancellationTokenSource cancellationTokenSource;
+            private TaskCompletionSource<int> taskCompletionSource;
+
+            private async void Start()
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+                taskCompletionSource = new TaskCompletionSource<int>();
+
+                // Register a callback to cancel the TaskCompletionSource when the token is canceled
+                cancellationTokenSource.Token.Register(() => taskCompletionSource.TrySetCanceled(cancellationTokenSource.Token));
+
+                try
+                {
+                    int result = await taskCompletionSource.Task;
+                    Debug.Log($"Result from task completion source task is {result}");
+                }
+                catch (TaskCanceledException)
+                {
+                    Debug.Log($"Task was canceled.");
+                }
+                catch (Exception ex)
+                {
+                    Debug.Log($"Task failed with exception: {ex.Message}");
+                }
+            }
+
+            private void OnDestroy()
+            {
+                CancelAndDisposeCancellationTokenSource();
+            }
+
+            private void CancelCancellationTokenSource()
+            {
+                if (cancellationTokenSource != null && !cancellationTokenSource.IsCancellationRequested)
+                {
+                    cancellationTokenSource.Cancel();
+                }
+            }
+
+            private void CancelAndDisposeCancellationTokenSource()
+            {
+                CancelCancellationTokenSource();
+                cancellationTokenSource?.Dispose();
+            }
+
+            public void CompleteTask()
+            {
+                taskCompletionSource.TrySetResult(42);
+            }
+
+            public void CancelTask()
+            {
+                taskCompletionSource.TrySetCanceled();
+            }
+
+            public void ErrorTask()
+            {
+                try
+                {
+                    throw new InvalidOperationException("Throwing Exception On Purpose");
+                }
+                catch (Exception e)
+                {
+                    taskCompletionSource.TrySetException(e);
+                }
+            }
+        }
